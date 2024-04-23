@@ -3,6 +3,7 @@
 import { User, Lock } from '@element-plus/icons-vue'
 import {login} from '@/api/admin/user.js'
 import {reactive} from 'vue';
+import router from "@/router/index.js";
 
 // 定义响应式的表单对象
 const from = reactive({
@@ -15,6 +16,10 @@ const onSubmit = ()=>{
   console.log('登录')
   login(from.username,from.password).then((res)=>{
     console.log(res);
+    //判断是否成功
+    if (res.data.success === true){
+      router.push("/admin/index")
+    }
   })
 }
 </script>

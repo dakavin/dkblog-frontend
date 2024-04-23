@@ -1,11 +1,12 @@
 import Index from '@/pages/frontend/index.vue'
 import Login from '@/pages/admin/login.vue'
+import AdminIndex from '@/pages/admin/index.vue'
 import {createRouter,createWebHashHistory} from "vue-router";
 
 // 统一在这里声明所有路由
 const routes = [
     {
-        // 路由路径
+        // 路由路径，首页
         path: '/',
         // 对应组件
         component: Index,
@@ -16,11 +17,19 @@ const routes = [
         }
     },
     {
-        // 登录页
+        // 后台登录页
         path: '/login',
         component: Login,
         meta: {
-            title: 'Blog 登录页'
+            title: 'Blog 后台登录页'
+        }
+    },
+    {
+        // 后台首页
+        path: '/admin/index',
+        component: AdminIndex,
+        meta: {
+            title: 'Blog 后台管理页'
         }
     }
 ]
