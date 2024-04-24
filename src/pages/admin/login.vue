@@ -51,19 +51,19 @@ const onSubmit = () => {
     login(form.username, form.password).then((res) => {
       console.log(res);
       //判断是否成功
-      if (res.data.success === true) {
+      if (res.success === true) {
         // 提示登录成功
         showMessage('登录成功！')
         // 存储 token 到 Cookie中去
-        let token = res.data.data.token
+        let token = res.data.token
         setToken(token)
         // 跳转到后台首页
         router.push("/admin/index")
       } else {
         // 获取服务端返回的错误信息
-        let message = res.data.msg
+        let message = res.msg
         // 提示信息
-        showMessage(res.data.msg, 'error')
+        showMessage(res.msg, 'error')
       }
     }).finally(() => {
       // 结束加载
