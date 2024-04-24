@@ -7,6 +7,8 @@ import { createApp } from 'vue'
 import App from '@/App.vue'
 // 导入路由
 import router from "@/router/index.js";
+// 导入全局路由守卫
+import '@/permission.js'
 // 导入 Element Plus 图标
 import * as ElementPlusIconsVue from '@element-plus/icons-vue'
 

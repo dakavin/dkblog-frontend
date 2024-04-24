@@ -13,7 +13,7 @@ const routes = [
         // meta信息
         meta: {
             // 页面标题
-            title: 'Blog 首页'
+            title: 'DK Blog 首页'
         }
     },
     {
@@ -21,7 +21,7 @@ const routes = [
         path: '/login',
         component: Login,
         meta: {
-            title: 'Blog 后台登录页'
+            title: 'DK Blog 后台登录页'
         }
     },
     {
@@ -29,7 +29,7 @@ const routes = [
         path: '/admin/index',
         component: AdminIndex,
         meta: {
-            title: 'Blog 后台管理页'
+            title: 'DK Blog 后台管理页'
         }
     }
 ]
