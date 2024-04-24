@@ -9,6 +9,7 @@ import {ElementPlusResolver} from "unplugin-vue-components/resolvers";
 export default defineConfig({
     plugins: [
         vue(),
+        // 实现Element Plus 的按需导入组件
         AutoImport({
             resolvers: [ElementPlusResolver()],
         }),
