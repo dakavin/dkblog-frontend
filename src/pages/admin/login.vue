@@ -32,6 +32,9 @@ const rules = {
   ]
 }
 
+// 登录按钮加载动画
+const loading = ref(false)
+
 // 登录
 const onSubmit = () => {
   console.log('登录')
@@ -41,6 +44,8 @@ const onSubmit = () => {
       console.log('表单验证不通过')
       return false;
     }
+    //开始加载
+    loading.value = true
     // 调用登录接口
     login(form.username, form.password).then((res) => {
       console.log(res);
@@ -56,6 +61,9 @@ const onSubmit = () => {
         // 提示信息
         showMessage(res.data.msg, 'error')
       }
+    }).finally(() => {
+      // 结束加载
+      loading.value = false
     })
   })
 }
@@ -63,20 +71,20 @@ const onSubmit = () => {
 // 按回车键后，执行登录事件
 function onKeyUp(e) {
   console.log(e)
-  if (e.key == 'Enter'){
+  if (e.key == 'Enter') {
     onSubmit()
   }
 }
 
 // 添加键盘监听
-onMounted(() =>{
+onMounted(() => {
   console.log('添加键盘监听')
-  document.addEventListener('keyup',onKeyUp)
+  document.addEventListener('keyup', onKeyUp)
 })
 
 // 移除键盘监听
-onBeforeUnmount(()=>{
-  document.removeEventListener('keyup',onKeyUp)
+onBeforeUnmount(() => {
+  document.removeEventListener('keyup', onKeyUp)
 })
 
 </script>
@@ -132,7 +140,7 @@ onBeforeUnmount(()=>{
           <!-- 登录按钮组件 -->
           <el-form-item>
             <!-- 登录按钮，宽度设置为 100% -->
-            <el-button class="w-full mt-2" size="large" type="primary" @click="onSubmit">登录</el-button>
+            <el-button class="w-full mt-2" size="large"  :loading="loading" type="primary" @click="onSubmit">登录</el-button>
           </el-form-item>
         </el-form>
       </div>
