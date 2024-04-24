@@ -1,5 +1,6 @@
 import axios from "axios";
 import {getToken} from "@/composables/auth.js";
+import {showMessage} from "@/composables/util.js";
 
 // 创建 axios 实例
 const instance = axios.create({
@@ -22,11 +23,11 @@ instance.interceptors.request.use(
             // 添加请求头，key 为 Authorization value 值的前缀为 'Bearer’
             config.headers['Authorization'] = 'Bearer' + token
         }
-        return config;
+        return config
     },
     function (error) {
         // 对请求错误做些什么
-        return Promise.reject(error);
+        return Promise.reject(error)
     }
 );
 
@@ -40,9 +41,14 @@ instance.interceptors.response.use(
     function (error) {
         // 超出 2xx 范围的状态码都会触发该函数。
         // 对响应错误做点什么
-        return Promise.reject(error);
+
+        // 若后台有错误提示就用提示文字，默认提示为 ‘请求失败’
+        let errorMsg = error.response.data.msg || '请求失败了哈😰'
+        showMessage(errorMsg,'error')
+
+        return Promise.reject(error)
     }
 );
 
 // 暴露出去
-export default instance;
+export default instance
