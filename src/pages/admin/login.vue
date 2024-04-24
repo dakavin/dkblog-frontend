@@ -5,6 +5,7 @@ import {login} from '@/api/admin/user.js'
 import {ref, reactive, onMounted, onBeforeUnmount} from 'vue';
 import router from "@/router/index.js";
 import {showMessage} from "@/composables/util.js";
+import {setToken} from "@/composables/auth.js";
 
 // 定义响应式的表单对象
 const form = reactive({
@@ -53,6 +54,9 @@ const onSubmit = () => {
       if (res.data.success === true) {
         // 提示登录成功
         showMessage('登录成功！')
+        // 存储 token 到 Cookie中去
+        let token = res.data.data.token
+        setToken(token)
         // 跳转到后台首页
         router.push("/admin/index")
       } else {
