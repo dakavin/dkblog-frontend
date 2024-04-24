@@ -2,7 +2,7 @@
 // 引入 Element Plus 中的用户、锁图标
 import {User, Lock} from '@element-plus/icons-vue'
 import {login} from '@/api/admin/user.js'
-import {ref, reactive} from 'vue';
+import {ref, reactive, onMounted, onBeforeUnmount} from 'vue';
 import router from "@/router/index.js";
 import {showMessage} from "@/composables/util.js";
 
@@ -54,11 +54,30 @@ const onSubmit = () => {
         // 获取服务端返回的错误信息
         let message = res.data.msg
         // 提示信息
-        showMessage(res.data.msg,'error')
+        showMessage(res.data.msg, 'error')
       }
     })
   })
 }
+
+// 按回车键后，执行登录事件
+function onKeyUp(e) {
+  console.log(e)
+  if (e.key == 'Enter'){
+    onSubmit()
+  }
+}
+
+// 添加键盘监听
+onMounted(() =>{
+  console.log('添加键盘监听')
+  document.addEventListener('keyup',onKeyUp)
+})
+
+// 移除键盘监听
+onBeforeUnmount(()=>{
+  document.removeEventListener('keyup',onKeyUp)
+})
 
 </script>
 
