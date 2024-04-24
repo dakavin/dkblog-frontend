@@ -139,7 +139,7 @@ onBeforeUnmount(() => {
           <!-- 密码框组件 -->
           <el-form-item prop="password">
             <el-input size="large" v-model="form.password" type="password" placeholder="请输入密码" :prefix-icon="Lock"
-                      clearable/>
+                      clearable show-password/>
           </el-form-item>
 
           <!-- 登录按钮组件 -->
