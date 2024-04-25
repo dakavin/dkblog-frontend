@@ -12,9 +12,17 @@ import router from "@/router/index.js";
 import '@/permission.js'
 // 导入 Element Plus 图标
 import * as ElementPlusIconsVue from '@element-plus/icons-vue'
+// 导入 全局状态管理 pinia
+import {createPinia} from "pinia";
 
 // 创建应用，并将 App 根组件挂载到 <div id="#app"></div> 中
 const app = createApp(App);
+// 创建pinia对象
+const pinia = createPinia()
+
+// 应用pinia
+app.use(pinia)
+
 // 应用路由
 app.use(router);
 // 引入图标
