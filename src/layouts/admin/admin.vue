@@ -41,5 +41,7 @@
 </template>
 
 <style scoped>
-
+  .el-header {
+    padding: 0!important;
+  }
 </style>
