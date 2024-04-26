@@ -1,9 +1,13 @@
 <script setup>
-  //引入布局组件
-  import AdminFooter from "@/layouts/admin/components/AdminFooter.vue";
-  import AdminHeader from "@/layouts/admin/components/AdminHeader.vue";
-  import AdminMenu from "@/layouts/admin/components/AdminMenu.vue";
-  import AdminTagList from "@/layouts/admin/components/AdminTagList.vue";
+//引入布局组件
+import AdminFooter from "@/layouts/admin/components/AdminFooter.vue";
+import AdminHeader from "@/layouts/admin/components/AdminHeader.vue";
+import AdminMenu from "@/layouts/admin/components/AdminMenu.vue";
+import AdminTagList from "@/layouts/admin/components/AdminTagList.vue";
+import {useMenuStore} from "@/stores/menu.js";
+
+// 同步菜单store中menu的宽度
+const menuStore = useMenuStore()
 </script>
 
 <template>
@@ -11,7 +15,7 @@
   <el-container>
 
     <!-- 左边侧边栏 -->
-    <el-aside>
+    <el-aside :width="menuStore.menuWidth" class="transition-all">
       <AdminMenu/>
     </el-aside>
 
@@ -41,7 +45,7 @@
 </template>
 
 <style scoped>
-  .el-header {
-    padding: 0!important;
-  }
+.el-header {
+  padding: 0 !important;
+}
 </style>

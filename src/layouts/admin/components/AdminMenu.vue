@@ -1,11 +1,13 @@
 <script setup>
 import {useRoute, useRouter} from "vue-router"
-import {ref} from 'vue'
+import {ref, computed} from 'vue'
+import {useMenuStore} from "@/stores/menu.js";
 
 const menus = [
-  {    'name':'监控台',
-    'icon':'Monitor',
-    'path':'/admin/index'
+  {
+    'name': '监控台',
+    'icon': 'Monitor',
+    'path': '/admin/index'
   },
   {
     'name': '文章管理',
@@ -38,26 +40,37 @@ const router = useRouter()
 const defaultActive = ref(route.path)
 
 // 菜单选择事件，实现跳转
-const handleSelect = (path)=>{
+// path来自于上面menu对象中的path！
+const handleSelect = (path) => {
   router.push(path)
 }
+
+// 获取菜单的store
+// 实现Header页面缩放按钮的事件，可以调解菜单页面的宽度（pinia全局统一了菜单的宽度！）
+const menuStore = useMenuStore()
+// 获取菜单是否折叠，避免折叠的时候，文字没有折叠
+const isCollapse = computed(() => !(menuStore.menuWidth === '250px'))
 </script>
 
 <template>
-  <div class="bg-slate-800 h-screen text-white">
+  <div :style="{width:menuStore.menuWidth}"
+       class="bg-slate-800 h-screen text-white menu-container transition-all">
     <!-- 顶部 Logo, 指定高度为 64px, 和右边的 Header 头保持一样高 -->
     <div class="flex items-center justify-center h-[64px]">
-      <img src="/src/assets/AdminLogo.png" class="h-[70px]">
+      <img v-if="menuStore.menuWidth === '250px'"
+           src="/src/assets/AdminLogoBig.png" class="h-[70px]">
+      <img v-else src="/src/assets/AdminLogoMini.png" class="h-[70px]">
     </div>
 
     <!-- 下方菜单 -->
-    <el-menu :default-active="defaultActive"  @select="handleSelect">
+    <el-menu :default-active="defaultActive" @select="handleSelect"
+             :collapse="isCollapse" :collapse-transition="false">
       <template v-for="(item,index) in menus" :key="index">
         <el-menu-item :index="item.path">
           <el-icon>
             <component :is="item.icon"></component>
           </el-icon>
-          <span>{{item.name}}</span>
+          <span>{{ item.name }}</span>
         </el-menu-item>
       </template>
     </el-menu>
@@ -65,33 +78,34 @@ const handleSelect = (path)=>{
 </template>
 
 <style scoped>
-  .el-menu {
-    background-color: rgb(30 41 59 / 1);
-    border-right: 0;
-  }
+.el-menu {
+  background-color: rgb(30 41 59 / 1);
+  border-right: 0;
+}
 
-  .el-sub-menu__title {
-    color: #fff;
-  }
+.el-sub-menu__title {
+  color: #fff;
+}
 
-  .el-sub-menu__title:hover {
-    background-color: #ffffff10;
-  }
+.el-sub-menu__title:hover {
+  background-color: #ffffff10;
+}
 
-  .el-menu-item.is-active {
-    background-color: var(--el-color-primary);
-    color: #fff;
-  }
+.el-menu-item.is-active {
+  background-color: var(--el-color-primary);
+  color: #fff;
+}
 
-  .el-menu-item.is-active:hover {
-    background-color: var(--el-color-primary);
-  }
+.el-menu-item.is-active:hover {
+  background-color: var(--el-color-primary);
+}
 
-  .el-menu-item {
-    color: #fff;
-  }
+.el-menu-item {
+  color: #fff;
+}
 
-  .el-menu-item:hover {
-    background-color: #ffffff10;
-  }
+.el-menu-item:hover {
+  background-color: #ffffff10;
+}
+
 </style>
