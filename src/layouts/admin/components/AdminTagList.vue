@@ -95,6 +95,26 @@ const removeTab = (path) => {
     tabChange(activeTab.value)
 }
 
+// 处理关闭标签菜单事件
+const handleCloseTab = (command) => {
+    // 首页路由
+    let indexPath = '/admin/index'
+    // 处理关闭其他
+    if (command=='closeOthers'){
+        // 仅过滤出首页和当前页
+        tabList.value = tabList.value.filter((tab)=>tab.path === indexPath || tab.path=== activeTab.value)
+    // 处理关闭所有
+    }else if(command=='closeAll'){
+        // 先切换回首页
+        activeTab.value = indexPath
+        // 只保留首页
+        tabList.value = tabList.value.filter((tab)=>tab.path === indexPath)
+        // 切换标签页
+        tabChange(activeTab.value)
+    }
+    // 将当前tabList设置到Cookie中
+    setTabList(tabList.value)
+}
 </script>
 
 <template>
@@ -111,7 +131,7 @@ const removeTab = (path) => {
         
         <!-- 右侧：下拉菜单 -->
         <span class="ml-auto flex items-center justify-center h-[32px] w-[32px]">
-            <el-dropdown>
+            <el-dropdown @command="handleCloseTab">
                 <span class="el-dropdown-link">
                     <el-icon>
                         <arrow-down/>
@@ -119,8 +139,8 @@ const removeTab = (path) => {
                 </span>
                 <template #dropdown>
                     <el-dropdown-menu>
-                        <el-dropdown-item>关闭其他</el-dropdown-item>
-                        <el-dropdown-item>关闭全部</el-dropdown-item>
+                        <el-dropdown-item command="closeOthers">关闭其他</el-dropdown-item>
+                        <el-dropdown-item command="closeAll">关闭全部</el-dropdown-item>
                     </el-dropdown-menu>
                 </template>
             </el-dropdown>
