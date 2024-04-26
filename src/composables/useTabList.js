@@ -121,6 +121,7 @@ export function useTabList() {
         activeTab,
         tabList,
         removeTab,
-        handleCloseTab
+        handleCloseTab,
+        tabChange
     }
 }
