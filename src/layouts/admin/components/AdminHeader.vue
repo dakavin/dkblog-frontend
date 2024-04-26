@@ -2,6 +2,7 @@
 import {useMenuStore} from '@/stores/menu.js'
 import {Expand, Refresh} from "@element-plus/icons-vue";
 import {useFullscreen} from "@vueuse/core";
+import {useUserStore} from "@/stores/user.js";
 
 // 引入pinia中的菜单store
 const menuStore = useMenuStore()
@@ -16,6 +17,9 @@ const {isFullscreen, toggle} = useFullscreen()
 
 // 刷新页面
 const handleRefresh = () => location.reload()
+
+// 引入用户store
+const userStore = useUserStore()
 </script>
 
 <template>
@@ -68,7 +72,7 @@ const handleRefresh = () => location.reload()
                 <span class="el-dropdown-link flex items-center justify-center text-gray-700 text-xs">
                     <!-- 头像 Avatar -->
                     <el-avatar class="mr-2" :size="25" src="./src/assets/default_avatar.webp"/>
-                    Admin
+                    {{userStore.userInfo.username}}
                     <el-icon class="el-icon--right">
                         <arrow-down/>
                     </el-icon>

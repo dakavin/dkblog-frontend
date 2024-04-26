@@ -16,7 +16,7 @@ instance.interceptors.request.use(
     function (config) {
         // 在发送请求之前做些什么
         const token = getToken()
-        console.log('统一添加请求头中的token' + token)
+        // console.log('统一添加请求头中的token' + token)
 
         // 当token不为空时
         if (token){
