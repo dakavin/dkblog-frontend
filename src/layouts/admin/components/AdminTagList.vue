@@ -1,81 +1,71 @@
 <script setup>
 import {ref} from 'vue'
 import {useMenuStore} from "@/stores/menu.js";
+import {useRoute} from "vue-router";
 
 // 获取菜单store，同步菜单伸缩
 const menuStore = useMenuStore()
+// 获取一个route对象，用于获取path
+const route = useRoute()
 
-let tabIndex = 2
-const editableTabsValue = ref('2')
-const editableTabs = ref([
+// 当前被选中的tab
+const activeTab = ref(route.path)
+// 标签数组，定义tab标签栏的内容
+const tabList = ref([
     {
-        title: 'Tab 1',
-        name: '1',
-        content: 'Tab 1 content',
+        title: '控制台',
+        path: "/admin/index"
     },
     {
-        title: 'Tab 2',
-        name: '2',
-        content: 'Tab 2 content',
+        title: '文章管理',
+        path: "/admin/article/list"
     },
+    {
+        title: '分类管理',
+        path: "/admin/category/list"
+    },
+    {
+        title: '标签管理',
+        path: "/admin/tag/list"
+    },
+    {
+        title: '博客设置',
+        path: "/admin/blog/setting"
+    }
 ])
 
-const addTab = (targetName) => {
-    const newTabName = `${++tabIndex}`
-    editableTabs.value.push({
-        title: 'New Tab',
-        name: newTabName,
-        content: 'New Tab content',
-    })
-    editableTabsValue.value = newTabName
-}
+// 删除 Tab 标签
 const removeTab = (targetName) => {
-    const tabs = editableTabs.value
-    let activeName = editableTabsValue.value
-    if (activeName === targetName) {
-        tabs.forEach((tab, index) => {
-            if (tab.name === targetName) {
-                const nextTab = tabs[index + 1] || tabs[index - 1]
-                if (nextTab) {
-                    activeName = nextTab.name
-                }
-            }
-        })
-    }
-    
-    editableTabsValue.value = activeName
-    editableTabs.value = tabs.filter((tab) => tab.name !== targetName)
 }
 </script>
 
 <template>
-    
     <div
         class="fixed top-[64px] h-[44px] px-2 right-0 z-50 flex items-center bg-white transition-all duration-300 shadow"
         :style="{left: menuStore.menuWidth}">
         <!-- 左边：标签导航栏 -->
-        <el-tabs v-model="editableTabsValue" type="card" class="demo-tabs" closable @tab-remove="removeTab"
+        <el-tabs v-model="activeTab" type="card" class="demo-tabs" @tab-remove="removeTab"
                  style="min-width: 10px;">
-            <el-tab-pane v-for="item in editableTabs" :key="item.name" :label="item.title" :name="item.name">
+            <el-tab-pane v-for="item in tabList" :key="item.path" :label="item.title" :name="item.path" :closable="item.path != '/admin/index'">
             </el-tab-pane>
         </el-tabs>
         
-        <!-- 右侧下拉菜单 -->
+        <!-- 右侧：下拉菜单 -->
         <span class="ml-auto flex items-center justify-center h-[32px] w-[32px]">
-      <el-dropdown>
-        <span class="el-dropdown-link">
-          <el-icon class="el-icon--right">
-            <arrow-down/>
-          </el-icon>
+            <el-dropdown>
+                <span class="el-dropdown-link">
+                    <el-icon>
+                        <arrow-down />
+                    </el-icon>
+                </span>
+                <template #dropdown>
+                    <el-dropdown-menu>
+                        <el-dropdown-item>关闭其他</el-dropdown-item>
+                        <el-dropdown-item>关闭全部</el-dropdown-item>
+                    </el-dropdown-menu>
+                </template>
+            </el-dropdown>
         </span>
-        <template #dropdown>
-          <el-dropdown-menu>
-            <el-dropdown-item>关闭其他</el-dropdown-item>
-            <el-dropdown-item>关闭全部</el-dropdown-item>
-          </el-dropdown-menu>
-        </template>
-      </el-dropdown>
-    </span>
     </div>
     <div class="h-[44px]"></div>
 </template>
