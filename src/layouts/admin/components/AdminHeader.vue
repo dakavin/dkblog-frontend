@@ -1,6 +1,7 @@
 <script setup>
 import {useMenuStore} from '@/stores/menu.js'
-import {Expand} from "@element-plus/icons-vue";
+import {Expand, Refresh} from "@element-plus/icons-vue";
+import {useFullscreen} from "@vueuse/core";
 
 // 引入pinia中的菜单store
 const menuStore = useMenuStore()
@@ -9,6 +10,12 @@ const handleMenuWidth = () => {
   // 动态设置菜单的宽度大小
   menuStore.handleMenuWidth()
 }
+
+// isFullScreen 表示当前是否处于全屏，toggle 用于动态切换全屏和非全屏
+const {isFullscreen,toggle} = useFullscreen()
+
+// 刷新页面
+const handleRefresh = ()=>location.reload()
 </script>
 
 <template>
@@ -27,12 +34,31 @@ const handleMenuWidth = () => {
 
     <!-- 右边容器，通过 ml-auto 让其在父容器的右边 -->
     <div class="ml-auto flex">
+      <!-- 点击刷新页面 -->
+      <el-tooltip class="box-item" effect="dark" content="刷新当前页面" placement="bottom">
+        <div @click="handleRefresh"
+             class="w-[42px] h-[64px] cursor-pointer flex items-center justify-center text-gray-700 mr-2 hover:bg-gray-200">
+          <el-icon>
+            <Refresh/>
+          </el-icon>
+        </div>
+      </el-tooltip>
+
       <!-- 点击全屏展示 -->
-      <el-tooltip class="box-item" effect="dark" content="全屏" placement="bottom">
-        <div
+      <el-tooltip v-if="!isFullscreen" class="box-item" effect="dark" content="全屏" placement="bottom">
+        <div @click="toggle"
             class="w-[42px] h-[64px] cursor-pointer flex items-center justify-center text-gray-700 mr-2 hover:bg-gray-200">
           <el-icon>
             <FullScreen/>
+          </el-icon>
+        </div>
+      </el-tooltip>
+      <!-- 点击退出全屏展示 -->
+      <el-tooltip v-else class="box-item" effect="dark" content="退出全屏" placement="bottom">
+        <div @click="toggle"
+             class="w-[42px] h-[64px] cursor-pointer flex items-center justify-center text-gray-700 mr-2 hover:bg-gray-200">
+          <el-icon>
+            <Aim/>
           </el-icon>
         </div>
       </el-tooltip>
