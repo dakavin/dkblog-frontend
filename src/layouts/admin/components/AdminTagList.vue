@@ -1,42 +1,73 @@
 <script setup>
 import {ref} from 'vue'
 import {useMenuStore} from "@/stores/menu.js";
-import {useRoute} from "vue-router";
+import {onBeforeRouteUpdate, useRoute, useRouter} from "vue-router";
+import {getTabList,setTabList} from "@/composables/tag-list.js";
 
 // 获取菜单store，同步菜单伸缩
 const menuStore = useMenuStore()
 // 获取一个route对象，用于获取path
 const route = useRoute()
-
 // 当前被选中的tab
 const activeTab = ref(route.path)
+// 路由对象
+const router = useRouter()
 // 标签数组，定义tab标签栏的内容
 const tabList = ref([
     {
         title: '控制台',
         path: "/admin/index"
     },
-    {
-        title: '文章管理',
-        path: "/admin/article/list"
-    },
-    {
-        title: '分类管理',
-        path: "/admin/category/list"
-    },
-    {
-        title: '标签管理',
-        path: "/admin/tag/list"
-    },
-    {
-        title: '博客设置',
-        path: "/admin/blog/setting"
-    }
 ])
+
+// 动态添加tab标签页
+function addTab(tab){
+    // 标签是否不存在
+    let isTabNotExisted = tabList.value.findIndex(item => item.path === tab.path) === -1
+    // 如果不存在
+    if (isTabNotExisted){
+        // 添加标签
+        tabList.value.push(tab)
+    }
+    // 存储 tabList 到 Cookie中
+    setTabList(tabList.value)
+}
+
+function initTabList(){
+    // 从cookie中获取缓存起来的标签导航栏数据
+    let tabs = getTabList()
+    // 若不为空，则赋值
+    if (tabs){
+        tabList.value = tabs
+    }
+}
+
+// 调用上面的方法，初始化标签导航栏
+initTabList()
+
+// 在路由切换前被调用的钩子函数
+onBeforeRouteUpdate((to,from)=>{
+    // 设置被激活的Tab标签
+    activeTab.value = to.path
+    // 添加Tab标签页
+    addTab({
+        title: to.meta.title,
+        path: to.path
+    })
+})
+
+// 点击标签可以切换页面
+const tabChange = (path) =>{
+    // 设置被激活的 Tab 标签
+    activeTab.value = path
+    // 路由跳转
+    router.push(path)
+}
 
 // 删除 Tab 标签
 const removeTab = (targetName) => {
 }
+
 </script>
 
 <template>
@@ -44,7 +75,7 @@ const removeTab = (targetName) => {
         class="fixed top-[64px] h-[44px] px-2 right-0 z-50 flex items-center bg-white transition-all duration-300 shadow"
         :style="{left: menuStore.menuWidth}">
         <!-- 左边：标签导航栏 -->
-        <el-tabs v-model="activeTab" type="card" class="demo-tabs" @tab-remove="removeTab"
+        <el-tabs v-model="activeTab" type="card" class="demo-tabs" @tab-remove="removeTab" @tab-change="tabChange"
                  style="min-width: 10px;">
             <el-tab-pane v-for="item in tabList" :key="item.path" :label="item.title" :name="item.path" :closable="item.path != '/admin/index'">
             </el-tab-pane>
