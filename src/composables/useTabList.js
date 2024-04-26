@@ -1,7 +1,7 @@
 import {ref} from 'vue'
 import {useMenuStore} from "@/stores/menu.js";
 import {onBeforeRouteUpdate, useRoute, useRouter} from "vue-router";
-import {getTabList, setTabList} from "@/composables/tag-list.js";
+import {getTabList, setTabList} from "@/composables/cookie.js";
 
 export function useTabList() {
     // 获取菜单store，同步菜单伸缩

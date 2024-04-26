@@ -5,7 +5,7 @@ import {login} from '@/api/admin/user.js'
 import {ref, reactive, onMounted, onBeforeUnmount} from 'vue';
 import router from "@/router/index.js";
 import {showMessage} from "@/composables/util.js";
-import {setToken} from "@/composables/auth.js";
+import {setToken} from "@/composables/cookie.js";
 
 // 定义响应式的表单对象
 const form = reactive({

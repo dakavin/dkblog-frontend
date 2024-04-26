@@ -1,5 +1,5 @@
 import router from "@/router/index.js";
-import {getToken} from "@/composables/auth.js";
+import {getToken} from "@/composables/cookie.js";
 import {showMessage, showPageLoading, hidePageLoading} from "@/composables/util.js";
 
 // 全局路由前置守卫
