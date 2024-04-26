@@ -35,7 +35,7 @@ export default defineConfig({
                 changeOrigin: true,
                 // 正则：对于以 /api 为开始的url，将其替换
                 // 如：访问前端 localhost:3000/api/user 就会正向代理到后端 localhost:8080/user
-                rewrite: path => path.replace(/^\/api/,'')
+                rewrite: path => path.replace(/^\/api/, '')
             }
         }
     }
