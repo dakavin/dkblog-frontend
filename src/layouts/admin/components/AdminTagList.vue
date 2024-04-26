@@ -2,7 +2,7 @@
 import {ref} from 'vue'
 import {useMenuStore} from "@/stores/menu.js";
 import {onBeforeRouteUpdate, useRoute, useRouter} from "vue-router";
-import {getTabList,setTabList} from "@/composables/tag-list.js";
+import {getTabList, setTabList} from "@/composables/tag-list.js";
 
 // 获取菜单store，同步菜单伸缩
 const menuStore = useMenuStore()
@@ -21,11 +21,11 @@ const tabList = ref([
 ])
 
 // 动态添加tab标签页
-function addTab(tab){
+function addTab(tab) {
     // 标签是否不存在
     let isTabNotExisted = tabList.value.findIndex(item => item.path === tab.path) === -1
     // 如果不存在
-    if (isTabNotExisted){
+    if (isTabNotExisted) {
         // 添加标签
         tabList.value.push(tab)
     }
@@ -33,11 +33,11 @@ function addTab(tab){
     setTabList(tabList.value)
 }
 
-function initTabList(){
+function initTabList() {
     // 从cookie中获取缓存起来的标签导航栏数据
     let tabs = getTabList()
     // 若不为空，则赋值
-    if (tabs){
+    if (tabs) {
         tabList.value = tabs
     }
 }
@@ -46,7 +46,7 @@ function initTabList(){
 initTabList()
 
 // 在路由切换前被调用的钩子函数
-onBeforeRouteUpdate((to,from)=>{
+onBeforeRouteUpdate((to, from) => {
     // 设置被激活的Tab标签
     activeTab.value = to.path
     // 添加Tab标签页
@@ -57,7 +57,7 @@ onBeforeRouteUpdate((to,from)=>{
 })
 
 // 点击标签可以切换页面
-const tabChange = (path) =>{
+const tabChange = (path) => {
     // 设置被激活的 Tab 标签
     activeTab.value = path
     // 路由跳转
@@ -65,7 +65,34 @@ const tabChange = (path) =>{
 }
 
 // 删除 Tab 标签
-const removeTab = (targetName) => {
+const removeTab = (path) => {
+    let tabs = tabList.value
+    // 当前被选中的tab标签
+    let actTab = activeTab.value
+    
+    // 如果要删除的是当前被选中的标签页，则需要判断被删除后，需要激活那个tab标签页
+    if (actTab === path) {
+        //循环tabList
+        tabs.forEach((tab, index)=>{
+            // 获取被选中的tab
+            if (tab.path === path) {
+                // 拿到被选中的标签页下标，如果它后面还有标签页，则取下一个标签页，否则取上一个
+                let nextTab = tabs[index + 1] || tabs[index - 1]
+                if (nextTab) {
+                    actTab = nextTab.path
+                }
+            }
+        })
+        
+    }
+    // 需要被激活的标签页
+    activeTab.value = actTab
+    // 过滤掉被删除的标签页，重新设置回去
+    tabList.value = tabList.value.filter((tab) => tab.path != path)
+    // 存储到 cookie中
+    setTabList(tabList.value)
+    // 切换标签页（注意是value）
+    tabChange(activeTab.value)
 }
 
 </script>
@@ -77,7 +104,8 @@ const removeTab = (targetName) => {
         <!-- 左边：标签导航栏 -->
         <el-tabs v-model="activeTab" type="card" class="demo-tabs" @tab-remove="removeTab" @tab-change="tabChange"
                  style="min-width: 10px;">
-            <el-tab-pane v-for="item in tabList" :key="item.path" :label="item.title" :name="item.path" :closable="item.path != '/admin/index'">
+            <el-tab-pane v-for="item in tabList" :key="item.path" :label="item.title" :name="item.path"
+                         :closable="item.path != '/admin/index'">
             </el-tab-pane>
         </el-tabs>
         
@@ -86,7 +114,7 @@ const removeTab = (targetName) => {
             <el-dropdown>
                 <span class="el-dropdown-link">
                     <el-icon>
-                        <arrow-down />
+                        <arrow-down/>
                     </el-icon>
                 </span>
                 <template #dropdown>
