@@ -69,7 +69,7 @@ const onSubmit = () => {
                 showMessage('密码重置成功，请重新登录！')
                 // 退出登录
                 userStore.logout()
-                // 隐藏对话款
+                // 隐藏对话框
                 dialogVisible.value = false
                 // 跳转登录页面
                 router.push('/login')
@@ -107,9 +107,7 @@ const handleCommand = (command) => {
 }
 
 // 调用键盘enter键监听
-keyboardListen(onSubmit)
-
-
+// keyboardListen(onSubmit)
 
 // 退出登录
 function logout() {
@@ -118,6 +116,8 @@ function logout() {
         showMessage('退出登录成功!')
         // 跳转登录页面
         router.push('/login')
+    }).catch(()=>{
+        showMessage('取消退出啦!','')
     })
 }
 </script>

@@ -5,9 +5,14 @@ import AdminHeader from "@/layouts/admin/components/AdminHeader.vue";
 import AdminMenu from "@/layouts/admin/components/AdminMenu.vue";
 import AdminTagList from "@/layouts/admin/components/AdminTagList.vue";
 import {useMenuStore} from "@/stores/menu.js";
+import {showMessage} from "@/composables/util.js";
 
 // 同步菜单store中menu的宽度
 const menuStore = useMenuStore()
+
+// 欢迎语
+showMessage('欢迎来到Admin管理页面！🌸撒花🌸')
+showMessage('😀DK Blog 祝你有美好的心情！😀')
 </script>
 
 <template>

@@ -30,8 +30,8 @@ export function showModel(content = '提示内容', type = 'warning', title = ''
         content,
         title,
         {
-            confirmButtonText: '溜了溜了',
-            cancelButtonText: '想一下哈',
+            confirmButtonText: '干了！',
+            cancelButtonText: '不干！',
             type,
         }
     )
