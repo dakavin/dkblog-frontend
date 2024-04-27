@@ -5,19 +5,14 @@ import {reactive, ref} from 'vue'
 import moment from "moment";
 import {addCategory, deleteCategory, getCategoryPageList} from "@/api/admin/category.js";
 import {showMessage, showModel} from "@/composables/util.js";
+// 引入对话框弹出组件
+import FormDialog from "@/components/FormDialog.vue";
 
 // 分页查询的分类名称
 const searchCategoryName = ref('')
 // 分类查询的日期
 const pickDate = ref('')
-// 当前页面，默认值为1
-const current = ref(1)
-// 总数据量，默认值为0
-const total = ref(0)
-// 每页显示的数据，默认值为10
-const size = ref(10)
-// 表格数据
-const tableData = ref([])
+
 // 查询条件：开始和结束时间
 const startDate = reactive({})
 const endDate = reactive({})
@@ -59,6 +54,15 @@ const shortcuts = [
     },
 ]
 
+// 表格数据
+const tableData = ref([])
+// 当前页面，默认值为1
+const current = ref(1)
+// 总数据量，默认值为0
+const total = ref(0)
+// 每页显示的数据，默认值为10
+const size = ref(10)
+
 // 调用接口，获取后端的分类分页数据
 function getTableData() {
     // 调用后台对应的接口
@@ -75,10 +79,9 @@ function getTableData() {
             }
         })
 }
-
 getTableData()
 
-// 每页展示数量变更时间
+// 每页展示数量变更事件
 const handleSizeChange = (chooseSize) => {
     size.value = chooseSize
     getTableData()
@@ -94,12 +97,17 @@ const reset = () => {
 }
 
 // 新增分类对话框是否显示
-const dialogVisible = ref(false)
+const formDialogRef = ref(null)
+
+// 新增分类按钮点击事件
+const addCategoryBtnClick = ()=>{
+    formDialogRef.value.open()
+}
 
 // 表单引用
 const formRef = ref(null)
 
-// 修改密码的表单引用
+// 添加文章分类的表单对象
 const form = reactive({
     name: ''
 })
@@ -112,7 +120,7 @@ const rules = {
     ]
 }
 
-// 修改密码提交操作
+// 添加分类提交操作
 const onSubmit = () => {
     // 先验证 form 表单字段
     formRef.value.validate((valid) => {
@@ -127,7 +135,7 @@ const onSubmit = () => {
                 // 将表单中分类名称置空
                 form.name = ''
                 // 隐藏对话框
-                dialogVisible.value = false
+                formDialogRef.value.close()
                 // 重新请求分页接口，渲染新的数据
                 getTableData()
             } else {
@@ -163,7 +171,7 @@ const deleteCategorySubmit = (row) => {
 
 // 编辑分类事件（修改分类名称和描述）
 const changeCategorySubmit = () => {
-
+    // todo
 }
 </script>
 
@@ -215,32 +223,12 @@ const changeCategorySubmit = () => {
             </el-table>
             
             <!-- 新增分类按钮 -->
-            <el-button class="mt-4" style="width: 100%" @click="dialogVisible=true">
+            <el-button class="mt-4" style="width: 100%" @click="addCategoryBtnClick">
                 <el-icon class="mr-1">
                     <Plus/>
                 </el-icon>
                 新增分类
             </el-button>
-            <!-- 新增分类弹窗 -->
-            <el-dialog v-model="dialogVisible" title="添加分类" width="40%" :draggable="true"
-                       :close-on-click-modal="false" :close-on-press-escape="false">
-                <!-- 添加分类表单 -->
-                <el-form ref="formRef" :rules="rules" :model="form">
-                    <el-form-item label="分类名称" prop="name" label-width="80px">
-                        <!-- 输入框组件 -->
-                        <el-input size="large" v-model="form.name" placeholder="请输入分类名称" maxlength="20"
-                                  show-word-limit clearable/>
-                    </el-form-item>
-                </el-form>
-                <template #footer>
-                    <span class="dialog-footer">
-                        <el-button @click="dialogVisible = false">取消</el-button>
-                        <el-button type="primary" @click="onSubmit">
-                            提交
-                        </el-button>
-                    </span>
-                </template>
-            </el-dialog>
             
             <!-- 分页的页码，数量等数据展示，页面跳转等事件 -->
             <div class="mt-10 flex justify-center">
@@ -250,7 +238,16 @@ const changeCategorySubmit = () => {
                                @size-change="handleSizeChange" @current-change="getTableData"/>
             </div>
         </el-card>
-    
+        
+        <FormDialog ref="formDialogRef" title="添加文章分类" destroyOnClose @submit="onSubmit" height="40px">
+            <!-- 输入框组件 -->
+            <el-form ref="formRef" :rules="rules" :model="form">
+                <el-form-item label="分类名称" prop="name" label-width="80px" size="large">
+                    <el-input size="large" v-model="form.name" placeholder="请输入分类名称" maxlength="20"
+                              show-word-limit clearable/>
+                </el-form-item>
+            </el-form>
+        </FormDialog>
     
     </div>
 </template>
