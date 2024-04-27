@@ -14,3 +14,8 @@ export function addCategory(data){
 export function deleteCategory(id){
     return axios.post('/admin/category/delete',{id})
 }
+
+// 修改分类
+export function updateCategory(data){
+    return axios.post('/admin/category/update',data)
+}

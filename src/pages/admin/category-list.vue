@@ -3,7 +3,7 @@
 import {RefreshRight, Search} from "@element-plus/icons-vue";
 import {reactive, ref} from 'vue'
 import moment from "moment";
-import {addCategory, deleteCategory, getCategoryPageList} from "@/api/admin/category.js";
+import {addCategory, deleteCategory, getCategoryPageList, updateCategory} from "@/api/admin/category.js";
 import {showMessage, showModel} from "@/composables/util.js";
 // 引入对话框弹出组件
 import FormDialog from "@/components/FormDialog.vue";
@@ -182,9 +182,68 @@ const deleteCategorySubmit = (row) => {
     })
 }
 
-// 编辑分类事件（修改分类名称和描述）
-const changeCategorySubmit = () => {
-    // todo
+// 新增分类对话框是否显示
+const updateFromDialogRef = ref(null)
+
+// 新增分类按钮点击事件
+const updateCategoryBtnClick = (row) => {
+    // 绑定分类的id、name、description
+    updateForm.id = row.id
+    updateForm.name = row.name
+    updateForm.description = row.description
+    updateFromDialogRef.value.open()
+}
+
+// 表单引用
+const updateFormRef = ref(null)
+
+// 新增文章分类的表单对象
+const updateForm = reactive({
+    id: '',
+    name: '',
+    description:''
+})
+
+// 校验规则
+const updateRules = {
+    name: [
+        {required: true, message: '分类名称不能为空', trigger: 'blur'},
+        {min: 1, max: 20, message: '分类名称字数要求大于 1 个字符，小于 20 个字符', trigger: 'blur'}
+    ],
+    description:[
+        {max: 100, message: '分类描述字数要求小于 100 个字符', trigger: 'blur'}
+    ]
+}
+// 修改分类提交操作
+const onUpdateSubmit = () => {
+    // 先验证 form 表单字段
+    updateFormRef.value.validate((valid) => {
+        if (!valid) {
+            console.log('表单验证不通过')
+            return false
+        }
+        // 显示提交按钮 loading
+        updateFromDialogRef.value.showBtnLoading()
+        // 请求添加分类接口
+        updateCategory(updateForm).then((res) => {
+            if (res.success === true) {
+                showMessage('修改成功')
+                // 将表单中分类名称和描述置空
+                updateForm.id = 0
+                updateForm.name = ''
+                updateForm.description = ''
+                // 隐藏对话框
+                updateFromDialogRef.value.close()
+                // 重新请求分页接口，渲染新的数据
+                getTableData()
+            } else {
+                // 获取服务端返回的错误消息
+                let msg = res.msg
+                // 提示消息
+                showMessage(msg, 'error')
+            }
+        }).finally(() => updateFromDialogRef.value.closeBtnLoading()) // 隐藏提交按钮 loading
+    })
 }
 
 </script>
@@ -217,11 +276,12 @@ const changeCategorySubmit = () => {
             <el-table :data="tableData" border stripe style="width: 100%" v-loading="tableLoading">
                 <el-table-column type="index" label="序号" width="60" align="center"/>
                 <el-table-column prop="name" label="分类名称" width="120" align="center"/>
-                <el-table-column prop="description" label="分类描述" width="400" align="center"/>
-                <el-table-column prop="createTime" label="创建时间" width="200" align="center"/>
+                <el-table-column prop="description" label="分类描述" width="300" align="center"/>
+                <el-table-column prop="createTime" label="创建时间" width="180" align="center"/>
+                <el-table-column prop="updateTime" label="更新时间" width="180" align="center"/>
                 <el-table-column label="操作" align="center">
                     <template #default="scope">
-                        <el-button size="default" @click="changeCategorySubmit(scope.row)">
+                        <el-button size="default" @click="updateCategoryBtnClick(scope.row)">
                             <el-icon class="mr-1">
                                 <Edit/>
                             </el-icon>
@@ -254,6 +314,7 @@ const changeCategorySubmit = () => {
             </div>
         </el-card>
         
+        <!-- 添加分类表单 -->
         <FormDialog ref="formDialogRef" title="添加文章分类" destroyOnClose @submit="onSubmit" height="40px">
             <!-- 输入框组件 -->
             <el-form ref="formRef" :rules="rules" :model="form">
@@ -263,6 +324,21 @@ const changeCategorySubmit = () => {
                 </el-form-item>
                 <el-form-item label="分类描述" prop="description" label-width="80px" size="large">
                     <el-input size="large" v-model="form.description" placeholder="请输入分类描述(非必须)" maxlength="100"
+                              show-word-limit clearable/>
+                </el-form-item>
+            </el-form>
+        </FormDialog>
+        
+        <!-- 修改分类表单 -->
+        <FormDialog ref="updateFromDialogRef" title="修改文章分类" destroyOnClose @submit="onUpdateSubmit" height="40px">
+            <!-- 输入框组件 -->
+            <el-form ref="updateFormRef" :rules="updateRules" :model="updateForm">
+                <el-form-item label="修改分类名称" prop="name" label-width="120px" size="large">
+                    <el-input size="large" v-model="updateForm.name" maxlength="20"
+                              show-word-limit clearable/>
+                </el-form-item>
+                <el-form-item label="修改分类描述" prop="description" label-width="120px" size="large">
+                    <el-input size="large" v-model="updateForm.description" maxlength="100"
                               show-word-limit clearable/>
                 </el-form-item>
             </el-form>
