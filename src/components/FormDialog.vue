@@ -10,7 +10,7 @@ const props = defineProps({
         type: String,
         default: '40%' // 默认值
     },
-    destroyOnClose:  {
+    destroyOnClose: {
         type: Boolean,
         default: false
     },
@@ -25,15 +25,23 @@ const open = () => dialogVisible.value = true
 // 关闭
 const close = () => dialogVisible.value = false
 
+// 确认按钮加载 loading
+const btnLoading = ref(false)
+// 显示loading
+const showBtnLoading = () => btnLoading.value = true
+const closeBtnLoading = () => btnLoading.value = false
+
 
 // 对外暴露一个 submit 方法
-const emit  = defineEmits(['submit'])
+const emit = defineEmits(['submit'])
 const submit = () => emit('submit')
 
 // 对外暴露方法
 defineExpose({
     open,
-    close
+    close,
+    showBtnLoading,
+    closeBtnLoading
 })
 </script>
 
@@ -46,7 +54,7 @@ defineExpose({
         <template #footer>
             <span class="dialog-footer">
                 <el-button @click="dialogVisible = false">取消</el-button>
-                <el-button type="primary" @click="submit">
+                <el-button type="primary" @click="submit" :loading="btnLoading">
                     {{ confirmText }}
                 </el-button>
             </span>

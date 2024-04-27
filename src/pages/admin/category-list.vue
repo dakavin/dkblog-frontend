@@ -63,22 +63,28 @@ const total = ref(0)
 // 每页显示的数据，默认值为10
 const size = ref(10)
 
+// 表格加载 Loading
+const tableLoading = ref(false)
+
 // 调用接口，获取后端的分类分页数据
 function getTableData() {
+    // 显示表格 loading
+    tableLoading.value = true
+    
     // 调用后台对应的接口
     getCategoryPageList({
         current: current.value, size: size.value, startDate: startDate.value,
         endDate: endDate.value, name: searchCategoryName.value
-    })
-        .then((res) => {
-            if (res.success === true) {
-                tableData.value = res.data
-                current.value = res.current
-                size.value = res.size
-                total.value = res.total
-            }
-        })
+    }).then((res) => {
+        if (res.success === true) {
+            tableData.value = res.data
+            current.value = res.current
+            size.value = res.size
+            total.value = res.total
+        }
+    }).finally(()=>tableLoading.value=false) // 隐藏表格 loading
 }
+
 getTableData()
 
 // 每页展示数量变更事件
@@ -100,7 +106,7 @@ const reset = () => {
 const formDialogRef = ref(null)
 
 // 新增分类按钮点击事件
-const addCategoryBtnClick = ()=>{
+const addCategoryBtnClick = () => {
     formDialogRef.value.open()
 }
 
@@ -109,7 +115,8 @@ const formRef = ref(null)
 
 // 添加文章分类的表单对象
 const form = reactive({
-    name: ''
+    name: '',
+    description:''
 })
 
 // 校验规则
@@ -117,6 +124,9 @@ const rules = {
     name: [
         {required: true, message: '分类名称不能为空', trigger: 'blur'},
         {min: 1, max: 20, message: '分类名称字数要求大于 1 个字符，小于 20 个字符', trigger: 'blur'}
+    ],
+    description:[
+        {max: 100, message: '分类描述字数要求小于 100 个字符', trigger: 'blur'}
     ]
 }
 
@@ -128,12 +138,15 @@ const onSubmit = () => {
             console.log('表单验证不通过')
             return false
         }
+        // 显示提交按钮 loading
+        formDialogRef.value.showBtnLoading()
         // 请求添加分类接口
         addCategory(form).then((res) => {
             if (res.success === true) {
                 showMessage('添加成功')
-                // 将表单中分类名称置空
+                // 将表单中分类名称和描述置空
                 form.name = ''
+                form.description = ''
                 // 隐藏对话框
                 formDialogRef.value.close()
                 // 重新请求分页接口，渲染新的数据
@@ -144,16 +157,16 @@ const onSubmit = () => {
                 // 提示消息
                 showMessage(msg, 'error')
             }
-        })
+        }).finally(() => formDialogRef.value.closeBtnLoading()) // 隐藏提交按钮 loading
     })
 }
 // 删除分类事件
 const deleteCategorySubmit = (row) => {
     // console.log(row.id)
-    showModel('是否确定要删除分类？').then(()=>{
-        deleteCategory(row.id).then((res)=>{
+    showModel('是否确定要删除分类？').then(() => {
+        deleteCategory(row.id).then((res) => {
             // console.log(res);
-            if (res.success === true){
+            if (res.success === true) {
                 showMessage(`删除分类【${row.name}】成功！`)
                 // 重新请求分页接口，渲染数据
                 getTableData()
@@ -164,8 +177,8 @@ const deleteCategorySubmit = (row) => {
                 showMessage(msg, 'error')
             }
         })
-    }).catch(()=>{
-        showMessage(`取消删除分类【${row.name}】`,'')
+    }).catch(() => {
+        showMessage(`取消删除分类【${row.name}】`, '')
     })
 }
 
@@ -173,6 +186,7 @@ const deleteCategorySubmit = (row) => {
 const changeCategorySubmit = () => {
     // todo
 }
+
 </script>
 
 <template>
@@ -200,9 +214,10 @@ const changeCategorySubmit = () => {
         
         <el-card shadow="never">
             <!-- 分类数据的分页列表 -->
-            <el-table :data="tableData" border stripe style="width: 100%">
+            <el-table :data="tableData" border stripe style="width: 100%" v-loading="tableLoading">
                 <el-table-column type="index" label="序号" width="60" align="center"/>
-                <el-table-column prop="name" label="分类名称" width="100" align="center"/>
+                <el-table-column prop="name" label="分类名称" width="120" align="center"/>
+                <el-table-column prop="description" label="分类描述" width="400" align="center"/>
                 <el-table-column prop="createTime" label="创建时间" width="200" align="center"/>
                 <el-table-column label="操作" align="center">
                     <template #default="scope">
@@ -223,7 +238,7 @@ const changeCategorySubmit = () => {
             </el-table>
             
             <!-- 新增分类按钮 -->
-            <el-button class="mt-4" style="width: 100%" @click="addCategoryBtnClick">
+            <el-button class="mt-4" type="primary" style="width: 100%" @click="addCategoryBtnClick">
                 <el-icon class="mr-1">
                     <Plus/>
                 </el-icon>
@@ -244,6 +259,10 @@ const changeCategorySubmit = () => {
             <el-form ref="formRef" :rules="rules" :model="form">
                 <el-form-item label="分类名称" prop="name" label-width="80px" size="large">
                     <el-input size="large" v-model="form.name" placeholder="请输入分类名称" maxlength="20"
+                              show-word-limit clearable/>
+                </el-form-item>
+                <el-form-item label="分类描述" prop="description" label-width="80px" size="large">
+                    <el-input size="large" v-model="form.description" placeholder="请输入分类描述(非必须)" maxlength="100"
                               show-word-limit clearable/>
                 </el-form-item>
             </el-form>
