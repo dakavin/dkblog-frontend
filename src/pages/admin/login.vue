@@ -42,7 +42,7 @@ const loading = ref(false)
 
 // 登录
 const onSubmit = () => {
-    console.log('登录')
+    // console.log('登录')
     // 先验证 form 表单字段
     formRef.value.validate((valid) => {
         if (!valid) {
