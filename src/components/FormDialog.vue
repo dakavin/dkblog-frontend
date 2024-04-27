@@ -38,7 +38,7 @@ defineExpose({
 </script>
 
 <template>
-    <el-dialog v-model="dialogVisible" title="title" width="width" :draggable="true"
+    <el-dialog v-model="dialogVisible" :title="title" :width="width" :draggable="true"
                :close-on-click-modal="false" :close-on-press-escape="false"
                align-center center>
         <!-- 插槽 -->

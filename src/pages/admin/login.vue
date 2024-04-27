@@ -57,7 +57,7 @@ const onSubmit = () => {
             //判断是否成功
             if (res.success === true) {
                 // 提示登录成功
-                showMessage('登录成功！')
+                // showMessage('登录成功！')
                 // 存储 token 到 Cookie中去
                 let token = res.data.token
                 setToken(token)

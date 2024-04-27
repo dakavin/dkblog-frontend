@@ -4,9 +4,11 @@ import {Expand, Refresh} from "@element-plus/icons-vue";
 import {useFullscreen} from "@vueuse/core";
 import {useUserStore} from "@/stores/user.js";
 import {useRouter} from "vue-router";
-import {keyboardListen, showMessage, showModel} from "@/composables/util.js";
-import {ref, reactive, watch} from 'vue'
+import {showMessage, showModel} from "@/composables/util.js";
+import {reactive, ref, watch} from 'vue'
 import {updateAdminPassword} from "@/api/admin/user.js";
+// 引入对话框弹出组件
+import FormDialog from "@/components/FormDialog.vue";
 
 
 // 引入pinia中的菜单store
@@ -27,8 +29,7 @@ const handleRefresh = () => location.reload()
 const userStore = useUserStore()
 // 引入 router
 const router = useRouter()
-// 修改密码对话框是否显示
-const dialogVisible = ref(false)
+
 
 // 表单引用
 const formRef = ref(null)
@@ -47,6 +48,14 @@ const rules = {
     rePassword: [
         {required: true, message: '确认密码不能为空', trigger: 'blur'},
     ],
+}
+
+// 修改密码对话框是否显示
+// const dialogVisible = ref(false)
+const formDialogRef = ref(null)
+// 修改密码按钮点击事件
+const changePwdBtnClick = ()=>{
+    formDialogRef.value.open()
 }
 
 // 修改密码提交操作
@@ -70,7 +79,7 @@ const onSubmit = () => {
                 // 退出登录
                 userStore.logout()
                 // 隐藏对话框
-                dialogVisible.value = false
+                formDialogRef.value.close()
                 // 跳转登录页面
                 router.push('/login')
             } else {
@@ -85,7 +94,7 @@ const onSubmit = () => {
 }
 
 // 监听 pinia store 中的某个值的变化
-watch(()=> userStore.userInfo.username,(newValue,oldValue)=>{
+watch(() => userStore.userInfo.username, (newValue, oldValue) => {
     // 在这里处理变化后的值
     // console.log('新值:', newValue);
     // console.log('旧值:', oldValue);
@@ -99,7 +108,7 @@ const handleCommand = (command) => {
     // 更新密码
     if (command == 'updatePassword') {
         // 显示修改密码对话框
-        dialogVisible.value = true
+        formDialogRef.value.open()
     } else if (command = 'logout') {
         logout()
     }
@@ -116,8 +125,8 @@ function logout() {
         showMessage('退出登录成功!')
         // 跳转登录页面
         router.push('/login')
-    }).catch(()=>{
-        showMessage('取消退出啦!','')
+    }).catch(() => {
+        showMessage('取消退出啦!', '')
     })
 }
 </script>
@@ -186,32 +195,24 @@ function logout() {
             </el-dropdown>
             
             <!-- 修改密码弹窗 -->
-            <el-dialog v-model="dialogVisible" title="修改密码" width="40%" :draggable="true"
-                       :close-on-click-modal="false" :close-on-press-escape="false">
+            <FormDialog ref="formDialogRef" title="修改密码" destoryOnClose @submit="onSubmit">
                 <!-- 修改密码表单 -->
-                <el-form ref="formRef" :rules="rules" :model="form">
-                    <el-form-item label="用户名" prop="username" label-width="120px">
+                <el-form ref="formRef" :rules="rules" :model="form" >
+                    <el-form-item label="用户名" prop="username" label-width="100px">
                         <!-- 输入框组件 -->
                         <el-input size="large" v-model="form.username" placeholder="请输入用户名" clearable disabled/>
                     </el-form-item>
-                    <el-form-item label="密码" prop="password" label-width="120px">
+                    <el-form-item label="密码" prop="password" label-width="100px">
                         <el-input size="large" type="password" v-model="form.password" placeholder="请输入密码"
                                   clearable show-password/>
                     </el-form-item>
-                    <el-form-item label="确认密码" prop="rePassword" label-width="120px">
+                    <el-form-item label="确认密码" prop="rePassword" label-width="100px">
                         <el-input size="large" type="password" v-model="form.rePassword" placeholder="请确认密码"
                                   clearable show-password/>
                     </el-form-item>
                 </el-form>
-                <template #footer>
-                    <span class="dialog-footer">
-                        <el-button @click="dialogVisible = false">取消</el-button>
-                        <el-button type="primary" @click="onSubmit">
-                            提交
-                        </el-button>
-                    </span>
-                </template>
-            </el-dialog>
+            </FormDialog>
+        
         </div>
     </div>
 </template>
