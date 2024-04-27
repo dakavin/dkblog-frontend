@@ -84,9 +84,6 @@ const onSubmit = () => {
     })
 }
 
-// 调用键盘enter键监听
-keyboardListen(onSubmit)
-
 // 监听 pinia store 中的某个值的变化
 watch(()=> userStore.userInfo.username,(newValue,oldValue)=>{
     // 在这里处理变化后的值
@@ -106,7 +103,13 @@ const handleCommand = (command) => {
     } else if (command = 'logout') {
         logout()
     }
+    return command
 }
+
+// 调用键盘enter键监听
+keyboardListen(onSubmit)
+
+
 
 // 退出登录
 function logout() {
