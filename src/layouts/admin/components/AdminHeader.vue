@@ -4,7 +4,7 @@ import {Expand, Refresh} from "@element-plus/icons-vue";
 import {useFullscreen} from "@vueuse/core";
 import {useUserStore} from "@/stores/user.js";
 import {useRouter} from "vue-router";
-import {showMessage, showModel} from "@/composables/util.js";
+import {keyboardListen, showMessage, showModel} from "@/composables/util.js";
 import {ref, reactive, watch} from 'vue'
 import {updateAdminPassword} from "@/api/admin/user.js";
 
@@ -83,6 +83,9 @@ const onSubmit = () => {
         })
     })
 }
+
+// 调用键盘enter键监听
+keyboardListen(onSubmit)
 
 // 监听 pinia store 中的某个值的变化
 watch(()=> userStore.userInfo.username,(newValue,oldValue)=>{

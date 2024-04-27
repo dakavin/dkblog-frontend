@@ -2,6 +2,7 @@ import 'element-plus/es/components/message/style/css'
 import 'element-plus/es/components/message-box/style/css'
 import {ElMessage, ElMessageBox} from "element-plus";
 import nprogress from "nprogress";
+import {onMounted, onBeforeUnmount} from 'vue';
 
 // 封装Element Plus 的 ElMessage方法
 export function showMessage(message = '提示内容', type = 'success', customClass = '') {
@@ -30,8 +31,31 @@ export function showModel(content = '提示内容', type = 'warning', title = ''
         title,
         {
             confirmButtonText: '溜了溜了',
-            cancelButtonText: '再看会吧',
+            cancelButtonText: '想一下哈',
             type,
         }
     )
+}
+
+// 键盘监听
+export function keyboardListen(enterMethod){
+    // 按回车键后，执行登录事件
+    function onKeyUp(e) {
+        // 监听键盘操作
+        // console.log(e)
+        if (e.key == 'Enter') {
+            enterMethod()
+        }
+    }
+
+    // 添加键盘监听
+    onMounted(() => {
+        // console.log('添加键盘监听')
+        document.addEventListener('keyup', onKeyUp)
+    })
+
+    // 移除键盘监听
+    onBeforeUnmount(() => {
+        document.removeEventListener('keyup', onKeyUp)
+    })
 }

@@ -1,10 +1,10 @@
 <script setup>
 // 引入 Element Plus 中的用户、锁图标
-import {User, Lock} from '@element-plus/icons-vue'
+import {Lock, User} from '@element-plus/icons-vue'
 import {login} from '@/api/admin/user.js'
-import {ref, reactive, onMounted, onBeforeUnmount} from 'vue';
+import {reactive, ref} from 'vue';
 import router from "@/router/index.js";
-import {showMessage} from "@/composables/util.js";
+import {keyboardListen, showMessage} from "@/composables/util.js";
 import {setToken} from "@/composables/cookie.js";
 import {useUserStore} from "@/stores/user.js";
 
@@ -80,25 +80,8 @@ const onSubmit = () => {
     })
 }
 
-// 按回车键后，执行登录事件
-function onKeyUp(e) {
-    // 监听键盘操作
-    // console.log(e)
-    if (e.key == 'Enter') {
-        onSubmit()
-    }
-}
-
-// 添加键盘监听
-onMounted(() => {
-    // console.log('添加键盘监听')
-    document.addEventListener('keyup', onKeyUp)
-})
-
-// 移除键盘监听
-onBeforeUnmount(() => {
-    document.removeEventListener('keyup', onKeyUp)
-})
+// 调用键盘enter键监听
+keyboardListen(onSubmit)
 
 </script>
 
