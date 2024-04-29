@@ -279,7 +279,7 @@ const onUpdateSubmit = () => {
                 <el-table-column prop="description" label="分类描述" width="300" align="center"/>
                 <el-table-column prop="createTime" label="创建时间" width="180" align="center"/>
                 <el-table-column prop="updateTime" label="更新时间" width="180" align="center"/>
-                <el-table-column label="操作" align="center">
+                <el-table-column label="操作" fixed="right"  align="center">
                     <template #default="scope">
                         <el-button size="default" @click="updateCategoryBtnClick(scope.row)">
                             <el-icon class="mr-1">
