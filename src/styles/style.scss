@@ -20,9 +20,6 @@ body {
   font-family: "HarmonyOS_Regular", sans-serif;
 }
 
-
-
-
 // 基础样式
 #app {
   position: fixed;
@@ -129,12 +126,6 @@ body {
       }
     }
   }
-}
-
-// Tooltip 样式
-.el-popper.is-dark {
-  background: #ffffff60 !important;
-  border: 1px solid transparent !important;
 }
 
 // 卡片样式
