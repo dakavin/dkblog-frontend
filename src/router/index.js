@@ -6,6 +6,7 @@ import AdminArticleList from "@/pages/admin/article-list.vue"
 import AdminCategoryList from "@/pages/admin/category-list.vue"
 import AdminTagList from "@/pages/admin/tag-list.vue"
 import AdminBlogSetting from "@/pages/admin/blog-setting.vue"
+import AccountSetting from "@/pages/admin/account-setting.vue"
 import {createRouter, createWebHashHistory} from "vue-router";
 
 // 统一在这里声明所有路由
@@ -69,6 +70,13 @@ const routes = [
                 component: AdminBlogSetting,
                 meta: {
                     title: '博客设置'
+                }
+            },
+            {
+                path: "/admin/account/setting",
+                component: AccountSetting,
+                meta: {
+                    title: '账户设置'
                 }
             },
         ],
