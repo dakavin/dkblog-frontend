@@ -128,7 +128,7 @@ function logout() {
         // 跳转登录页面
         router.push('/login')
     }).catch(() => {
-        showMessage('取消退出啦!', '')
+        showMessage('取消退出啦!', 'info')
     })
 }
 </script>

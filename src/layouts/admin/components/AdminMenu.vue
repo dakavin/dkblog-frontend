@@ -88,7 +88,7 @@ const isCollapse = computed(() => !(menuStore.menuWidth === '250px'))
 }
 
 .el-sub-menu__title:hover {
-  background-color: #ffffff10;
+  background-color: rgba(255, 255, 255, 0.06);
 }
 
 .el-menu-item.is-active {

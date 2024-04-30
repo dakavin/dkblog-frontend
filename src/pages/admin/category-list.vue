@@ -178,7 +178,7 @@ const deleteCategorySubmit = (row) => {
             }
         })
     }).catch(() => {
-        showMessage(`取消删除分类【${row.name}】`, '')
+        showMessage(`取消删除分类【${row.name}】`, 'info')
     })
 }
 
@@ -222,7 +222,7 @@ const onUpdateSubmit = () => {
             console.log('表单验证不通过')
             return false
         }
-        // 显示提交按钮 loading
+        // 显示提交按钮 loading效果
         updateFromDialogRef.value.showBtnLoading()
         // 请求添加分类接口
         updateCategory(updateForm).then((res) => {
@@ -266,8 +266,8 @@ const onUpdateSubmit = () => {
                                     end-placeholder="结束时间" size="default" :shortcuts="shortcuts"/>
                 </div>
                 
-                <el-button type="primary" class="ml-3" :icon="Search" @click="getTableData">查询</el-button>
-                <el-button class="ml-3" :icon="RefreshRight" @click="reset">重置</el-button>
+                <el-button type="primary" class="ml-3 cards" :icon="Search" @click="getTableData">查询</el-button>
+                <el-button class="ml-3 cards" :icon="RefreshRight" @click="reset">重置</el-button>
             </div>
         </el-card>
         

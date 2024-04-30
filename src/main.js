@@ -1,6 +1,7 @@
 import '@/assets/main.css'
 import 'animate.css';
 import 'nprogress/nprogress.css'
+import '@/styles/style.scss'
 
 // 引入 creatApp 方法
 import { createApp } from 'vue'

@@ -5,12 +5,14 @@ import nprogress from "nprogress";
 import {onMounted, onBeforeUnmount} from 'vue';
 
 // 封装Element Plus 的 ElMessage方法
-export function showMessage(message = '提示内容', type = 'success', customClass = '') {
+export function showMessage(message = '提示内容', type='success', customClass = '') {
     return ElMessage({
         type: type,
         message,
         customClass,
-        showClose: true,
+        showClose: false,
+        center: true,
+        duration: 2000,
     })
 }
 
