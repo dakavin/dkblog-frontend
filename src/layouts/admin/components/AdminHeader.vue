@@ -134,89 +134,92 @@ function logout() {
 </script>
 
 <template>
-    <!-- 通过 flex 指定水平布局 -->
-    <!-- 设置背景色为白色、高度为 64px，padding-right 为 4， border-bottom 为 slate 200 -->
-    <div class="bg-white h-[64px] flex pr-4 border-b border-slate-100">
-        <!-- 左边栏收缩、展开 -->
-        <div @click="handleMenuWidth"
-             class="w-[42px] h-[64px] cursor-pointer flex items-center justify-center text-gray-700 hover:bg-gray-200">
-            <el-icon>
-                <!-- 实现收缩和展开时，显示不同的图标 -->
-                <Fold v-if="menuStore.menuWidth === '250px'"/>
-                <Expand v-else/>
-            </el-icon>
+    <!-- 固钉组件，通过设置 offset 属性来改变吸顶距离，默认值为 0。 -->
+    <el-affix :offset="0">
+        <!-- 通过 flex 指定水平布局 -->
+        <!-- 设置背景色为白色、高度为 64px，padding-right 为 4， border-bottom 为 slate 200 -->
+        <div class="bg-white h-[64px] flex pr-6 border-b border-slate-100">
+            <!-- 左边栏收缩、展开 -->
+            <div @click="handleMenuWidth"
+                 class="w-[42px] h-[64px] cursor-pointer  flex items-center justify-center text-gray-700 hover:bg-gray-200">
+                <el-icon>
+                    <!-- 实现收缩和展开时，显示不同的图标 -->
+                    <Fold v-if="menuStore.menuWidth === '250px'"/>
+                    <Expand v-else/>
+                </el-icon>
+            </div>
+            
+            <!-- 右边容器，通过 ml-auto 让其在父容器的右边 -->
+            <div class="ml-auto flex">
+                <!-- 点击刷新页面 -->
+                <el-tooltip class="box-item" effect="dark" content="刷新当前页面" placement="bottom">
+                    <div @click="handleRefresh"
+                         class="w-[42px] h-[64px] cursor-pointer flex items-center justify-center text-gray-700 mr-2 hover:bg-gray-200">
+                        <el-icon>
+                            <Refresh/>
+                        </el-icon>
+                    </div>
+                </el-tooltip>
+                
+                <!-- 点击全屏展示 -->
+                <el-tooltip v-if="!isFullscreen" class="box-item" effect="dark" content="全屏" placement="bottom">
+                    <div @click="toggle"
+                         class="w-[42px] h-[64px] cursor-pointer flex items-center justify-center text-gray-700 mr-5 hover:bg-gray-200">
+                        <el-icon>
+                            <FullScreen/>
+                        </el-icon>
+                    </div>
+                </el-tooltip>
+                <!-- 点击退出全屏展示 -->
+                <el-tooltip v-else class="box-item" effect="dark" content="退出全屏" placement="bottom">
+                    <div @click="toggle"
+                         class="w-[42px] h-[64px] cursor-pointer flex items-center justify-center text-gray-700 mr-2 hover:bg-gray-200">
+                        <el-icon>
+                            <Aim/>
+                        </el-icon>
+                    </div>
+                </el-tooltip>
+                
+                <!-- 登录用户头像 -->
+                <el-dropdown class="flex items-center justify-center" @command="handleCommand">
+                    <span class="el-dropdown-link flex items-center justify-center text-gray-700 text-xs">
+                        <!-- 头像 Avatar -->
+                        <el-avatar class="mr-2" :size="25" src="./src/assets/default_avatar.webp"/>
+                        {{ userStore.userInfo.username }}
+                        <el-icon class="el-icon--right">
+                            <arrow-down/>
+                        </el-icon>
+                    </span>
+                    <template #dropdown>
+                        <el-dropdown-menu>
+                            <el-dropdown-item command='updatePassword'>修改密码</el-dropdown-item>
+                            <el-dropdown-item command='logout'>退出登录</el-dropdown-item>
+                        </el-dropdown-menu>
+                    </template>
+                </el-dropdown>
+                
+                <!-- 修改密码弹窗 -->
+                <FormDialog ref="formDialogRef" title="修改密码" destoryOnClose @submit="onSubmit">
+                    <!-- 修改密码表单 -->
+                    <el-form ref="formRef" :rules="rules" :model="form" >
+                        <el-form-item label="用户名" prop="username" label-width="100px">
+                            <!-- 输入框组件 -->
+                            <el-input size="large" v-model="form.username" placeholder="请输入用户名" clearable disabled/>
+                        </el-form-item>
+                        <el-form-item label="密码" prop="password" label-width="100px">
+                            <el-input size="large" type="password" v-model="form.password" placeholder="请输入密码"
+                                      clearable show-password/>
+                        </el-form-item>
+                        <el-form-item label="确认密码" prop="rePassword" label-width="100px">
+                            <el-input size="large" type="password" v-model="form.rePassword" placeholder="请确认密码"
+                                      clearable show-password/>
+                        </el-form-item>
+                    </el-form>
+                </FormDialog>
+            
+            </div>
         </div>
-        
-        <!-- 右边容器，通过 ml-auto 让其在父容器的右边 -->
-        <div class="ml-auto flex">
-            <!-- 点击刷新页面 -->
-            <el-tooltip class="box-item" effect="dark" content="刷新当前页面" placement="bottom">
-                <div @click="handleRefresh"
-                     class="w-[42px] h-[64px] cursor-pointer flex items-center justify-center text-gray-700 mr-2 hover:bg-gray-200">
-                    <el-icon>
-                        <Refresh/>
-                    </el-icon>
-                </div>
-            </el-tooltip>
-            
-            <!-- 点击全屏展示 -->
-            <el-tooltip v-if="!isFullscreen" class="box-item" effect="dark" content="全屏" placement="bottom">
-                <div @click="toggle"
-                     class="w-[42px] h-[64px] cursor-pointer flex items-center justify-center text-gray-700 mr-5 hover:bg-gray-200">
-                    <el-icon>
-                        <FullScreen/>
-                    </el-icon>
-                </div>
-            </el-tooltip>
-            <!-- 点击退出全屏展示 -->
-            <el-tooltip v-else class="box-item" effect="dark" content="退出全屏" placement="bottom">
-                <div @click="toggle"
-                     class="w-[42px] h-[64px] cursor-pointer flex items-center justify-center text-gray-700 mr-2 hover:bg-gray-200">
-                    <el-icon>
-                        <Aim/>
-                    </el-icon>
-                </div>
-            </el-tooltip>
-            
-            <!-- 登录用户头像 -->
-            <el-dropdown class="flex items-center justify-center" @command="handleCommand">
-                <span class="el-dropdown-link flex items-center justify-center text-gray-700 text-xs">
-                    <!-- 头像 Avatar -->
-                    <el-avatar class="mr-2" :size="25" src="./src/assets/default_avatar.webp"/>
-                    {{ userStore.userInfo.username }}
-                    <el-icon class="el-icon--right">
-                        <arrow-down/>
-                    </el-icon>
-                </span>
-                <template #dropdown>
-                    <el-dropdown-menu>
-                        <el-dropdown-item command='updatePassword'>修改密码</el-dropdown-item>
-                        <el-dropdown-item command='logout'>退出登录</el-dropdown-item>
-                    </el-dropdown-menu>
-                </template>
-            </el-dropdown>
-            
-            <!-- 修改密码弹窗 -->
-            <FormDialog ref="formDialogRef" title="修改密码" destoryOnClose @submit="onSubmit">
-                <!-- 修改密码表单 -->
-                <el-form ref="formRef" :rules="rules" :model="form" >
-                    <el-form-item label="用户名" prop="username" label-width="100px">
-                        <!-- 输入框组件 -->
-                        <el-input size="large" v-model="form.username" placeholder="请输入用户名" clearable disabled/>
-                    </el-form-item>
-                    <el-form-item label="密码" prop="password" label-width="100px">
-                        <el-input size="large" type="password" v-model="form.password" placeholder="请输入密码"
-                                  clearable show-password/>
-                    </el-form-item>
-                    <el-form-item label="确认密码" prop="rePassword" label-width="100px">
-                        <el-input size="large" type="password" v-model="form.rePassword" placeholder="请确认密码"
-                                  clearable show-password/>
-                    </el-form-item>
-                </el-form>
-            </FormDialog>
-        
-        </div>
-    </div>
+    </el-affix>
 </template>
 
 <style scoped>
