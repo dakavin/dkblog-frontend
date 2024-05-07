@@ -38,7 +38,9 @@ showMessage('😀DK Blog 祝你有美好的心情！😀')
                 
                 <!-- 主内容（根据路由动态展示不同页面） -->
                 <router-view v-slot="{ Component }">
+                    <!-- 用于优化路由跳转时，组件的加载css，即组件的过渡效果 -->
                     <Transition name="fade">
+                        <!-- 用于缓存vue组件，不用每次加载组件的时候，都要和后端请求数据 -->
                         <!-- max 指定最多缓存 10 个组件 -->
                         <KeepAlive :max="10">
                             <component :is="Component"></component>

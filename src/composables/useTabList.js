@@ -33,6 +33,17 @@ export function useTabList() {
         setTabList(tabList.value)
     }
 
+    // 在路由切换前被调用的钩子函数
+    onBeforeRouteUpdate((to, from) => {
+        // 设置被激活的Tab标签
+        activeTab.value = to.path
+        // 添加Tab标签页
+        addTab({
+            title: to.meta.title,
+            path: to.path
+        })
+    })
+
     function initTabList() {
         // 从cookie中获取缓存起来的标签导航栏数据
         let tabs = getTabList()
@@ -45,17 +56,6 @@ export function useTabList() {
     // 调用上面的方法，初始化标签导航栏
     initTabList()
 
-    // 在路由切换前被调用的钩子函数
-    onBeforeRouteUpdate((to, from) => {
-        // 设置被激活的Tab标签
-        activeTab.value = to.path
-        // 添加Tab标签页
-        addTab({
-            title: to.meta.title,
-            path: to.path
-        })
-    })
-
     // 点击标签可以切换页面
     const tabChange = (path) => {
         // 设置被激活的 Tab 标签
@@ -64,7 +64,7 @@ export function useTabList() {
         router.push(path)
     }
 
-    // 删除 Tab 标签
+    // 删除 Tab 标签(传入需要删除的标签的path)
     const removeTab = (path) => {
         let tabs = tabList.value
         // 当前被选中的tab标签
