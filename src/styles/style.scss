@@ -16,13 +16,13 @@ body {
   margin: 0;
   padding: 0;
   background-color: #ffffff;
-  overflow: hidden;
+  overflow-y: auto; /* 确保页面可以垂直滚动 */
   font-family: "HarmonyOS_Regular", sans-serif;
 }
 
 // 基础样式
 #app {
-  position: fixed;
+  //position: fixed;
   top: 0;
   left: 0;
   width: 100vw;
@@ -216,6 +216,7 @@ body {
   }
 }
 
+
 // 滚动条样式
 ::-webkit-scrollbar,
 scrollbar {
@@ -227,5 +228,6 @@ scrollbar {
 ::-webkit-scrollbar-thumb,
 scrollbar-thumb {
   border-radius: 10px;
-  background-color: #eeeeee;
+  //background-color: #eeeeee;
+  background-color: #3f9eff;
 }

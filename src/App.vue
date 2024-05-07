@@ -35,10 +35,14 @@ onMounted(() => {
 </script>
 
 <template>
-    <!-- html 代码 -->
-    <el-config-provider :locale="locale">
-        <router-view/>
-    </el-config-provider>
+    <div class="custom-cursor">
+    <!-- 默哀的时候开启 -->
+    <!--<div class="custom-cursor grayscale">-->
+        <!-- html 代码 -->
+        <el-config-provider :locale="locale">
+            <router-view/>
+        </el-config-provider>
+    </div>
 </template>
 
 <style scoped>
