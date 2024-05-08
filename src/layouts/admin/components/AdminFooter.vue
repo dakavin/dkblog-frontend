@@ -7,7 +7,7 @@ const siteStartDate = "2023-4-28";
 </script>
 
 <template>
-    <div d="footer" class="power flex items-center justify-center text-sm text-gray-500 shadow-none">
+    <div class="bg-white py-5 flex items-center justify-center text-sm text-gray-500 shadow-none">
         <span>
           Copyright&nbsp;&copy;
           <span v-if="siteStartDate?.length >= 4">
