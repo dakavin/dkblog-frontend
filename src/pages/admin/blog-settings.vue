@@ -1,7 +1,7 @@
 <script setup>
 import {reactive, ref} from "vue";
 import {Check, Close} from "@element-plus/icons-vue";
-import {getBlogSettingsDetail} from "@/api/admin/blogsettings.js";
+import {getBlogSettingsDetail, updateBlogSettings} from "@/api/admin/blogsettings.js";
 import {uploadFile} from "@/api/admin/file.js";
 import {showMessage} from "@/composables/util.js";
 
@@ -150,9 +150,36 @@ const handleAvatarChange = (file) => {
     })
 }
 
-// 表单提交方法
-function onSubmit() {
+// ---表单提交方法（更新博客设置）---
 
+// 是否显示保存按钮的 loading 状态，默认为false
+const btnLoading = ref(false)
+// 表单引用
+const formRef = ref(null)
+// 保存当前博客设置
+const onSubmit = () => {
+    // 先验证 form 表单字段
+    formRef.value.validate((valid) => {
+        if (!valid) {
+            console.log('表单验证不通过')
+            return false
+        }
+        
+        // 显示保存按钮 loading
+        btnLoading.value = true
+        updateBlogSettings(form).then((res) => {
+            if (res.success === false){
+                // 获取服务端返回的错误消息
+                let message = res.message
+                // 提示错误消息
+                showMessage(message, 'error')
+                return
+            }
+            // 重新渲染页面中的数据
+            initBlogSettings()
+            showMessage('保存成功！')
+        }).finally(()=>btnLoading.value =false) // 隐藏保存按钮 loading
+    })
 }
 </script>
 
@@ -161,7 +188,7 @@ function onSubmit() {
         <!-- 卡片组件，nerver指定卡片组件没有阴影 -->
         <el-card shadow="never">
             <!-- 内容区域 -->
-            <el-form :model="form" label-width="160px" :rules="rules">
+            <el-form ref="formRef" :model="form" label-width="160px" :rules="rules">
                 <el-form-item label="博客名称" prop="name">
                     <el-input v-model="form.name" clearable/>
                 </el-form-item>
@@ -233,7 +260,7 @@ function onSubmit() {
                 
                 
                 <el-form-item>
-                    <el-button type="primary" @click="onSubmit">保存</el-button>
+                    <el-button type="primary" :loading="btnLoading" @click="onSubmit">保存</el-button>
                 </el-form-item>
             </el-form>
         </el-card>
