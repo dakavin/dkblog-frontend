@@ -5,12 +5,18 @@ import {reactive, ref} from 'vue'
 import moment from "moment";
 import {showMessage, showModel} from "@/composables/util.js";
 // 引入对话框弹出组件
-import {deleteArticle, getArticlePageList, publishArticle} from "@/api/admin/article.js";
+import {
+    deleteArticle,
+    getArticleDetail,
+    getArticlePageList,
+    publishArticle,
+    updateArticle
+} from "@/api/admin/article.js";
 import {MdEditor} from "md-editor-v3";
 import 'md-editor-v3/lib/style.css'
 import {uploadFile} from "@/api/admin/file.js";
 import {getCategorySelectList} from "@/api/admin/category.js";
-import {searchTags} from "@/api/admin/tag.js";
+import {getTagSelectList, searchTags} from "@/api/admin/tag.js";
 
 
 // --> 下面是查询文章的操作 <--
@@ -216,16 +222,16 @@ getCategorySelectList().then((res) => {
 const tagSelectLoading = ref(false)
 // 文章标签
 const tags = ref([])
-// 根据用户输入的标签名称，异步模糊查询
+// 根据用户输入的标签名称，异步模糊查询（发布文章时的标签模糊查询）
 const remoteMethod = (query) => {
     // console.log('远程搜索：' + tags.value)
     // 如果用户的查询关键词不为空
-    if (query){
+    if (query) {
         // 显示loading
         tagSelectLoading.value = true
         // 调用标签模糊查询接口
-        searchTags(query).then((res)=>{
-            if (res.success === true){
+        searchTags(query).then((res) => {
+            if (res.success === true) {
                 // 设置到 tags 变量中
                 tags.value = res.data
             }
@@ -234,8 +240,8 @@ const remoteMethod = (query) => {
 }
 
 // --> 下面是发布文章的操作 <--
-const publishArticleSubmit = ()=>{
-    console.log('提交 md 内容：' + form.content)
+const publishArticleSubmit = () => {
+    // console.log('提交 md 内容：' + form.content)
     // 校验表单
     publishArticleFormRef.value.validate((valid) => {
         if (!valid) {
@@ -261,6 +267,97 @@ const publishArticleSubmit = ()=>{
             form.summary = ''
             form.categoryId = null
             form.tags = []
+            // 重新请求分页接口，渲染列表数据
+            getTableData()
+        })
+    })
+}
+// --> 下面是更新文章的操作 <--
+// 是否显示更新文章对话框
+const isArticleUpdateEditorShow = ref(false)
+// 编辑文章表单引用
+const updateArticleFormRef = ref(null)
+// 修改文章表单对象
+const updateArticleForm = reactive({
+    id: null,
+    title: '',
+    content: '请输入内容',
+    cover: '',
+    categoryId: null,
+    tags: [],
+    summary: ""
+})
+// 编辑文章：上传文章封面图片
+const handleUpdateCoverChange = (file) => {
+    // 表单对象
+    let formData = new FormData()
+    // 添加 file字段，并将文件传入
+    formData.append('file', file.raw)
+    uploadFile(formData).then((res) => {
+        // 响参失败，提示错误信息
+        if (res.success === false) {
+            let msg = res.msg
+            showMessage(msg, 'error')
+            return
+        }
+        // 成功则设置表达对象中的封面链接，并提示上传成功
+        // 成功则 后台上传图片，并获取图片链接
+        if (updateArticleForm.cover === res.data.url) {
+            showMessage("请勿重复上传封面图", 'warning')
+        } else {
+            updateArticleForm.cover = res.data.url
+            showMessage("封面图上传成功,请保存设置", 'info')
+        }
+    })
+}
+// 编辑文章按钮点击事件，获取文章详细信息
+const showArticleUpdateEditor = (row) => {
+    // 显示编辑文章对话框
+    isArticleUpdateEditorShow.value = true;
+    // 拿到文章的ID
+    let articleId = row.id
+    // 获取文章详细信息
+    getArticleDetail(articleId).then((res) => {
+        if (res.success === true) {
+            // 设置更新表单数据
+            updateArticleForm.id = res.data.id
+            updateArticleForm.title = res.data.title
+            updateArticleForm.cover = res.data.cover
+            updateArticleForm.content = res.data.content
+            updateArticleForm.categoryId = res.data.categoryId
+            updateArticleForm.tags = res.data.tagIds // 此时获得的是标签的id，我们还需要转换一下
+            updateArticleForm.summary = res.data.summary
+        } else {
+            let msg = res.msg
+            showMessage(msg, 'error')
+        }
+    })
+}
+// 渲染标签数据（id 变为 name）
+getTagSelectList().then(res => {
+    tags.value = res.data
+})
+
+// 保存更新/编辑后的文章
+const updateSubmit = () => {
+    updateArticleFormRef.value.validate((valid) => {
+        // 校验表单
+        if (!valid) {
+            return false
+        }
+        // 请求更新文章接口
+        updateArticle(updateArticleForm).then((res) => {
+            if (res.success === false){
+                // 获取服务端返回的错误信息
+                let message = res.message
+                // 提示错误消息
+                showMessage(message, 'error')
+                return
+            }
+            
+            showMessage('文章更新成功')
+            // 隐藏编辑框
+            isArticleUpdateEditorShow.value = false
             // 重新请求分页接口，渲染列表数据
             getTableData()
         })
@@ -309,7 +406,7 @@ const publishArticleSubmit = ()=>{
                 <el-table-column prop="updateTime" label="更新时间" width="180" align="center"/>
                 <el-table-column label="操作" fixed="right" align="center">
                     <template #default="scope">
-                        <el-button size="default" @click="updateCategoryBtnClick(scope.row)">
+                        <el-button size="default" @click="showArticleUpdateEditor(scope.row)">
                             <el-icon class="mr-1">
                                 <Edit/>
                             </el-icon>
@@ -343,7 +440,8 @@ const publishArticleSubmit = ()=>{
         </el-card>
         
         <!-- 发布文章弹窗 -->
-        <el-dialog v-model="isArticlePublishEditorShow" :show-close="false" :fullscreen="true">
+        <el-dialog v-model="isArticlePublishEditorShow" :show-close="false" :fullscreen="true"
+                   :close-on-press-escape="false">
             <template #header="{close,titleId,titleClass}">
                 <!-- 固定组件，固定到顶部 -->
                 <el-affix :offset="18" style="width: 100%">
@@ -408,6 +506,88 @@ const publishArticleSubmit = ()=>{
                     <span class="w-60">
                         <!-- 标签选择 -->
                         <el-select v-model="form.tags" multiple filterable remote reserve-keyword
+                                   placeholder="请输入文章标签"
+                                   remote-show-suffix allow-create default-first-option :remote-method="remoteMethod"
+                                   :loading="tagSelectLoading"
+                                   size="large">
+                            <el-option v-for="item in tags" :key="item.value" :label="item.label" :value="item.value"/>
+                        </el-select>
+                    </span>
+                </el-form-item>
+            </el-form>
+        </el-dialog>
+        
+        <!-- 编辑文章弹窗 -->
+        <el-dialog v-model="isArticleUpdateEditorShow" :show-close="false" :fullscreen="true"
+                   :close-on-press-escape="false">
+            <template #header="{close,titleId,titleClass}">
+                <!-- 固定组件，固定到顶部 -->
+                <el-affix :offset="18" style="width: 100%">
+                    <!-- 指定flex布局，高度为10，背景为白色 -->
+                    <div class="flex h-1 bg-white">
+                        <!-- 字体加粗 -->
+                        <h4 :id="titleId" class="font-bold">编辑文章啦</h4>
+                        <!-- 靠右对齐 -->
+                        <div class="ml-auto flex">
+                            <el-button type="warning" @click="isArticleUpdateEditorShow = false">
+                                <el-icon class="mr-1">
+                                    <CloseBold/>
+                                </el-icon>
+                                取消
+                            </el-button>
+                            <el-button type="primary" @click="updateSubmit">
+                                <el-icon class="mr-1">
+                                    <Promotion/>
+                                </el-icon>
+                                保存
+                            </el-button>
+                        </div>
+                    </div>
+                </el-affix>
+            </template>
+            <!-- label-position="top" 用于指定 label 元素在上面 -->
+            <el-form :model="updateArticleForm" ref="updateArticleFormRef" label-position="top" size="large"
+                     :rules="rules">
+                <el-form-item label="标题" prop="title">
+                    <el-input v-model="updateArticleForm.title" autocomplete="off" size="large" maxlength="40"
+                              show-word-limit
+                              clearable/>
+                </el-form-item>
+                
+                <el-form-item label="内容" prop="content">
+                    <!-- Markdown 编辑器 -->
+                    <MdEditor v-model="updateArticleForm.content" @onUploadImg="onUploadImg"
+                              editorId="updateArticleEditor"/>
+                </el-form-item>
+                
+                <el-form-item label="封面" prop="cover">
+                    <el-upload class="avatar-uploader border" action="#" :on-change="handleUpdateCoverChange"
+                               :auto-upload="false" :show-file-list="false">
+                        <img v-if="updateArticleForm.cover" :src="updateArticleForm.cover" class="avatar"/>
+                        <el-icon v-else class="avatar-uploader-icon">
+                            <Plus/>
+                        </el-icon>
+                    </el-upload>
+                </el-form-item>
+                
+                <el-form-item label="摘要" prop="summary">
+                    <!-- :rows="3" 指定 textarea 默认显示 3 行 -->
+                    <el-input v-model="updateArticleForm.summary" :rows="3" type="textarea"
+                              placeholder="请输入文章摘要"/>
+                </el-form-item>
+                
+                <el-form-item label="分类" prop="categoryId">
+                    <el-select v-model="updateArticleForm.categoryId" clearable placeholder="---请选择---" size="large">
+                        <el-option v-for="item in categories" :key="item.value" :label="item.label"
+                                   :value="item.value"/>
+                    </el-select>
+                </el-form-item>
+                
+                <el-form-item label="标签" prop="tags">
+                    <!-- 标签选择 -->
+                    <span class="w-60">
+                        <!-- 标签选择 -->
+                        <el-select v-model="updateArticleForm.tags" multiple filterable remote reserve-keyword
                                    placeholder="请输入文章标签"
                                    remote-show-suffix allow-create default-first-option :remote-method="remoteMethod"
                                    :loading="tagSelectLoading"
