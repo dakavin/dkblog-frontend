@@ -122,7 +122,6 @@ const deleteArticleSubmit = (row) => {
     // console.log(row.id)
     showModel('是否确定要删除文章？').then(() => {
         deleteArticle(row.id).then((res) => {
-            console.log(res);
             if (res.success === true) {
                 showMessage(`删除文章【${row.title}】成功！`)
                 // 重新请求分页接口，渲染数据
@@ -395,7 +394,14 @@ const updateSubmit = () => {
             <el-table :data="tableData" border stripe style="width: 100%" v-loading="tableLoading">
                 <el-table-column type="index" label="序号" width="60" align="center"/>
                 <el-table-column prop="title" label="标题" width="180" align="center"/>
-                <!--todo 以后增加文章的标签和分类-->
+                <!--增加文章的所属标签和分类-->
+                <el-table-column prop="categoryName" label="所属分类" width="100" align="center"/>
+                <el-table-column prop="tagIds" label="所属标签" width="200" align="center">
+                    <template #default = "scope">
+                        <el-tag style="margin-right: 1px; margin-top: 1px"
+                                type="success" v-for="item in scope.row.tagNames">{{item}}</el-tag>
+                    </template>
+                </el-table-column>
                 <!--<el-table-column prop="summary" label="文章概要" width="200" align="center"/>-->
                 <el-table-column prop="cover" label="封面" width="130" align="center">
                     <template #default="scope">
@@ -501,7 +507,7 @@ const updateSubmit = () => {
                     </el-select>
                 </el-form-item>
                 
-                <el-form-item label="标签" prop="tags">
+                <el-form-item label="标签" prop="tags" >
                     <!-- 标签选择 -->
                     <span class="w-60">
                         <!-- 标签选择 -->
@@ -526,7 +532,7 @@ const updateSubmit = () => {
                     <!-- 指定flex布局，高度为10，背景为白色 -->
                     <div class="flex h-1 bg-white">
                         <!-- 字体加粗 -->
-                        <h4 :id="titleId" class="font-bold">编辑文章啦</h4>
+                        <h4 :id="titleId" class="font-bold">编辑文章</h4>
                         <!-- 靠右对齐 -->
                         <div class="ml-auto flex">
                             <el-button type="warning" @click="isArticleUpdateEditorShow = false">
