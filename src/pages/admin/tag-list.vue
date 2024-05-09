@@ -279,7 +279,7 @@ const onUpdateSubmit = () => {
                     <template #default = "scope">
                         <el-tag type="success">{{scope.row.name}}</el-tag>
                     </template>
-                </el-table-column>>
+                </el-table-column>
                 <el-table-column prop="description" label="标签描述" width="300" align="center"/>
                 <el-table-column prop="createTime" label="创建时间" width="180" align="center"/>
                 <el-table-column prop="updateTime" label="更新时间" width="180" align="center"/>

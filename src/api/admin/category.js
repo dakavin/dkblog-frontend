@@ -19,3 +19,8 @@ export function deleteCategory(id){
 export function updateCategory(data){
     return axios.post('/admin/category/update',data)
 }
+
+// 获取分类 select 数据（创建文章的时候使用）
+export function getCategorySelectList(){
+    return axios.post('/admin/category/select/list')
+}

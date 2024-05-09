@@ -19,3 +19,8 @@ export function deleteTag(id){
 export function updateTag(data){
     return axios.post('/admin/tag/update',data)
 }
+
+// 根据标签名模糊查询（创建文章的时候使用）
+export function searchTags(key) {
+    return axios.post("/admin/tag/search", {key})
+}
