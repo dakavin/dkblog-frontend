@@ -38,13 +38,15 @@ const formRef = ref(null)
 const form = reactive({
     username: userStore.userInfo.username || '',
     password: '',
+    originPassword:'',
     rePassword: '',
 })
 
 // 校验规则
 const rules = {
     username: [{required: true, message: '用户名不能为空', trigger: 'blur'}],
-    password: [{required: true, message: '密码不能为空', trigger: 'blur'}],
+    password: [{required: true, message: '新密码不能为空', trigger: 'blur'}],
+    originPassword: [{required: true, message: '旧密码不能为空', trigger: 'blur'}],
     rePassword: [
         {required: true, message: '确认密码不能为空', trigger: 'blur'},
     ],
@@ -68,6 +70,10 @@ const onSubmit = () => {
         }
         if (form.password !== form.rePassword) {
             showMessage('两次输入的密码不一致！', 'warning')
+            return
+        }
+        if (form.originPassword === form.password){
+            showMessage('新密码不能和旧密码相同！','warning')
             return
         }
         // 显示提交loading
@@ -206,12 +212,16 @@ function logout() {
                             <!-- 输入框组件 -->
                             <el-input size="large" v-model="form.username" placeholder="请输入用户名" clearable disabled/>
                         </el-form-item>
-                        <el-form-item label="密码" prop="password" label-width="100px">
-                            <el-input size="large" type="password" v-model="form.password" placeholder="请输入密码"
+                        <el-form-item label="旧密码" prop="originPassword" label-width="100px">
+                            <el-input size="large" type="password" v-model="form.originPassword" placeholder="请输入旧密码"
                                       clearable show-password/>
                         </el-form-item>
-                        <el-form-item label="确认密码" prop="rePassword" label-width="100px">
-                            <el-input size="large" type="password" v-model="form.rePassword" placeholder="请确认密码"
+                        <el-form-item label="新密码" prop="password" label-width="100px">
+                            <el-input size="large" type="password" v-model="form.password" placeholder="请设置新密码"
+                                      clearable show-password/>
+                        </el-form-item>
+                        <el-form-item label="确认新密码" prop="rePassword" label-width="100px">
+                            <el-input size="large" type="password" v-model="form.rePassword" placeholder="请再次输入新密码"
                                       clearable show-password/>
                         </el-form-item>
                     </el-form>
