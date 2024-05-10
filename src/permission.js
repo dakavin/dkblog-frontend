@@ -1,6 +1,7 @@
 import router from "@/router/index.js";
 import {getToken} from "@/composables/cookie.js";
 import {showMessage, showPageLoading, hidePageLoading} from "@/composables/util.js";
+import {useBlogSettingsStore} from "@/stores/blogsettings.js";
 
 // 全局路由前置守卫
 router.beforeEach((to, from, next) => {
@@ -18,9 +19,16 @@ router.beforeEach((to, from, next) => {
         showMessage('请勿重复登录哈！', 'warning')
         // 跳转后台首页
         next({path: '/admin/index'})
+    } else if (!to.path.startsWith('/admin')) {
+        // 如果访问的非 /amdmin 前缀路由
+        // 引入博客设置 store
+        let blogSettingsStore = useBlogSettingsStore()
+        // 获取博客设置信息，并保存到全局状态中
+        blogSettingsStore.getBlogSettings()
+        next()
+    } else {
+        next()
     }
-
-    next()
 })
 
 // 全局路由后置守卫

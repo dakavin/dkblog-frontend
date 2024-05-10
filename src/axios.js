@@ -1,7 +1,7 @@
 import axios from "axios";
-import {getToken, removeToken} from "@/composables/cookie.js";
+import {getToken} from "@/composables/cookie.js";
 import {showMessage} from "@/composables/util.js";
-import router from "@/router/index.js";
+import {useUserStore} from "@/stores/user.js";
 
 // 创建 axios 实例
 const instance = axios.create({
@@ -45,8 +45,10 @@ instance.interceptors.response.use(
         showMessage(errorMsg,'error')
         // 一般 token失效 或 无效 会触发 后台返回401
         if (status === 401){
-            // 删除token后，会触发路由前置守卫，跳转登录页面
-            removeToken()
+            // 直接使用userStore中的logout方法，删除token的同时也会触发路由前置守卫，跳转登录页面
+            // 如果只调用removeToken方法，会导致用户信息还存在，如：前台页面就无法用户是否已经退出（通过userStore中的userInfo判断）
+            const userStore = useUserStore()
+            userStore.logout()
             // 刷新页面
             location.reload()
         }
