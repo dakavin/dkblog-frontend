@@ -1,5 +1,5 @@
 /*
-作者: imsyy
+作者: dakkk
 主页：https://www.dakkk.top/
 GitHub：https://github.com/dakavin
 版权所有，请勿删除
@@ -16,17 +16,17 @@ body {
   margin: 0;
   padding: 0;
   background-color: #ffffff;
-  overflow-y: auto; /* 确保页面可以垂直滚动 */
+  overflow-y: hidden; /* 禁止body本身的滚动 */
   font-family: "HarmonyOS_Regular", sans-serif;
+  //cursor: none;
 }
 
-// 基础样式
+/* #app 容器样式 */
 #app {
-  //position: fixed;
-  top: 0;
-  left: 0;
+  position: relative;
   width: 100vw;
   height: 100vh;
+  overflow-y: auto; /* 允许 #app 容器垂直滚动 */
   z-index: 0;
 }
 
@@ -193,30 +193,6 @@ body {
   }
 }
 
-// 自定义鼠标
-#cursor {
-  position: fixed;
-  width: 18px;
-  height: 18px;
-  background: #000000;
-  border-radius: 25px;
-  opacity: 0.25;
-  z-index: 10086;
-  pointer-events: none;
-  transition: 0.2s ease-in-out;
-  transition-property: background, opacity, transform;
-
-  &.hidden {
-    opacity: 0;
-  }
-
-  &.active {
-    opacity: 0.5;
-    transform: scale(0.5);
-  }
-}
-
-
 // 滚动条样式
 ::-webkit-scrollbar,
 scrollbar {
@@ -231,3 +207,63 @@ scrollbar-thumb {
   //background-color: #eeeeee;
   background-color: #3f9eff;
 }
+
+// 自定义鼠标
+//#cursor {
+//  position: fixed;
+//  width: 18px;
+//  height: 18px;
+//  background: #000000;
+//  border-radius: 25px;
+//  opacity: 0.25;
+//  z-index: 10086;
+//  pointer-events: none;
+//  transition: 0.2s ease-in-out;
+//  transition-property: background, opacity, transform;
+//
+//  &.hidden {
+//    opacity: 0;
+//  }
+//
+//  &.active {
+//    opacity: 0.5;
+//    transform: scale(0.5);
+//  }
+//}
+
+/* 在CSS文件中 */
+/* 在CSS文件中 */
+#cursor {
+  width: 20px;
+  height: 20px;
+  position: absolute;
+  border: 2px solid #fff; /* 修改边框颜色为白色以符合星空主题 */
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  z-index: 9999;
+  background: radial-gradient(circle, rgba(173,216,230,1) 0%, rgb(63, 158, 255) 100%); /* 偏蓝色星空渐变背景 */
+  box-shadow: 0 0 10px rgba(173, 216, 230, 0.8), 0 0 20px rgba(0, 0, 255, 0.5); /* 光晕效果 */
+  transition: transform 0.1s ease, background 0.1s ease, box-shadow 0.1s ease; /* 增加动画效果 */
+}
+
+.clickable-cursor {
+  width: 25px; /* 点击状态下的大小 */
+  height: 25px;
+  border: 2px solid #00f; /* 点击状态下的边框颜色 */
+  background: radial-gradient(circle, rgba(173,216,230,1) 0%, rgba(0,0,255,1) 100%); /* 点击状态下的渐变背景 */
+  box-shadow: 0 0 10px rgba(173, 216, 230, 0.8), 0 0 20px rgba(0, 0, 255, 0.5); /* 点击状态下的光晕效果 */
+}
+
+* {
+  cursor: none !important; /* 强制所有元素使用自定义光标 */
+}
+
+
+
+
+
+
+
+
+

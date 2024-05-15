@@ -5,13 +5,15 @@ js 代码, setup 标识通常和组合式 API 搭配使用,
 */
 import zhCn from 'element-plus/dist/locale/zh-cn.mjs'
 import cursorInit from "@/composables/cursor.js";
+import {initializeCustomCursor } from '@/composables/cursor-new.js'
 import {onMounted} from "vue";
 
 const locale = zhCn
 
 onMounted(() => {
     // 自定义鼠标
-    cursorInit();
+    // cursorInit();
+    initializeCustomCursor();
     
     // 屏蔽右键
     document.oncontextmenu = () => {
