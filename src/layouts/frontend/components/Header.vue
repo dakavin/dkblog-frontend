@@ -14,6 +14,7 @@ onMounted(() => {
 // 通过 pinia 中的 user仓库中的 userInfo是否有值，来判断用户是否登录
 const useStore = useUserStore()
 // 获取 userInfo 对象所有属性名称的数组
+// 接收一个对象作为参数，并返回一个包含对象所有可枚举属性键的数组
 const keys = Object.keys(useStore.userInfo)
 // 若大于0，表示用户已登录
 const isLogin = ref(keys.length>0)
