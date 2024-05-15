@@ -18,7 +18,6 @@ body {
   background-color: #ffffff;
   overflow-y: hidden; /* 禁止body本身的滚动 */
   font-family: "HarmonyOS_Regular", sans-serif;
-  //cursor: none;
 }
 
 /* #app 容器样式 */
@@ -27,7 +26,7 @@ body {
   width: 100vw;
   height: 100vh;
   overflow-y: auto; /* 允许 #app 容器垂直滚动 */
-  z-index: 0;
+  //z-index: 0; /*影响了前台页面退出弹窗！！！*/
 }
 
 // 卡片样式
@@ -36,12 +35,12 @@ body {
   background-color: #00000040;
   backdrop-filter: blur(10px);
   transform: scale(1);
-  transition:
-    backdrop-filter 0.3s,
-    transform 0.3s;
+  transition: backdrop-filter 0.3s, transform 0.3s;
+
   &:hover {
     transform: scale(1.01);
   }
+
   &:active {
     transform: scale(0.98);
   }
@@ -54,7 +53,7 @@ body {
   text-overflow: ellipsis;
 }
 
- // 文字滑动
+// 文字滑动
 // 通用代码部分 ⬇️
 .scroll-wrap {
   margin-left: 8px;
@@ -71,22 +70,12 @@ body {
 }
 
 @keyframes scroll {
-  0% {
+  0%, 10% {
     margin-left: 0;
     transform: translateX(0);
   }
 
-  10% {
-    margin-left: 0;
-    transform: translateX(0);
-  }
-
-  90% {
-    margin-left: 100%;
-    transform: translateX(-100%);
-  }
-
-  100% {
+  90%, 100% {
     margin-left: 100%;
     transform: translateX(-100%);
   }
@@ -105,6 +94,7 @@ body {
   .el-message__badge {
     display: none;
   }
+
   .el-message__content {
     white-space: nowrap;
   }
@@ -115,11 +105,13 @@ body {
   .el-progress-bar__outer {
     border-radius: 6px;
     background-color: #00000020;
+
     .el-progress-bar__inner {
       background-color: #efefef;
       border-radius: 6px;
       text-align: center;
       font-family: "UnidreamLED";
+
       span {
         color: #564d59;
         font-size: 0.9rem;
@@ -133,12 +125,14 @@ body {
   border-radius: 8px !important;
   border: 1px solid transparent !important;
   background-color: transparent !important;
+
   .el-card__header {
     font-weight: bold;
     padding: 16px 20px !important;
     background-color: #ffffff30 !important;
     border-bottom: 1px solid transparent !important;
   }
+
   .el-card__body {
     padding: 0 !important;
     background-color: #ffffff10 !important;
@@ -242,7 +236,7 @@ scrollbar-thumb {
   transform: translate(-50%, -50%);
   pointer-events: none;
   z-index: 9999;
-  background: radial-gradient(circle, rgba(173,216,230,1) 0%, rgb(63, 158, 255) 100%); /* 偏蓝色星空渐变背景 */
+  background: radial-gradient(circle, rgba(173, 216, 230, 1) 0%, rgb(63, 158, 255) 100%); /* 偏蓝色星空渐变背景 */
   box-shadow: 0 0 10px rgba(173, 216, 230, 0.8), 0 0 20px rgba(0, 0, 255, 0.5); /* 光晕效果 */
   transition: transform 0.1s ease, background 0.1s ease, box-shadow 0.1s ease; /* 增加动画效果 */
 }
@@ -251,7 +245,7 @@ scrollbar-thumb {
   width: 25px; /* 点击状态下的大小 */
   height: 25px;
   border: 2px solid #00f; /* 点击状态下的边框颜色 */
-  background: radial-gradient(circle, rgba(173,216,230,1) 0%, rgba(0,0,255,1) 100%); /* 点击状态下的渐变背景 */
+  background: radial-gradient(circle, rgba(173, 216, 230, 1) 0%, rgba(0, 0, 255, 1) 100%); /* 点击状态下的渐变背景 */
   box-shadow: 0 0 10px rgba(173, 216, 230, 0.8), 0 0 20px rgba(0, 0, 255, 0.5); /* 点击状态下的光晕效果 */
 }
 
