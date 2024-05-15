@@ -15,7 +15,7 @@ const form = reactive({
     githubHomepage: '',
     giteeHomepage: '',
     email: '',
-    otherHomePage: '',
+    otherHomepage: '',
 })
 
 // 表单规则校验
@@ -53,14 +53,14 @@ const giteeSwitchChange = (checked) => {
 // 监听Email Switch 改变事件
 const emailSwitchChange = (checked) => {
     if (checked == false) {
-        form.zhihuHomepage = ''
+        form.email = ''
     }
 }
 
 // 监听 Other Switch 改变事件
 const otherSwitchChange = (checked) => {
     if (checked == false) {
-        form.csdnHomepage = ''
+        form.otherHomepage = ''
     }
 }
 
@@ -94,8 +94,8 @@ function initBlogSettings() {
             }
             
             if (res.data.otherHomepage) {
-                isEmailChecked.value = true
-                form.otherHomePage = res.data.otherHomepage
+                isOtherChecked.value = true
+                form.otherHomepage = res.data.otherHomepage
             }
         }
     })
@@ -255,7 +255,7 @@ const onSubmit = () => {
                                @change="otherSwitchChange"/>
                 </el-form-item>
                 <el-form-item label="其他主页访问地址" v-if="isOtherChecked">
-                    <el-input v-model="form.otherHomePage" clearable placeholder="请输入 其他主页 访问的 URL"/>
+                    <el-input v-model="form.otherHomepage" clearable placeholder="请输入 其他主页 访问的 URL"/>
                 </el-form-item>
                 
                 
