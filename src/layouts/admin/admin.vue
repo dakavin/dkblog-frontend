@@ -9,52 +9,54 @@ import {showMessage} from "@/composables/util.js";
 
 // 同步菜单store中menu的宽度
 const menuStore = useMenuStore()
+const {menuVisible} = useMenuStore();
 
 // 欢迎语
-showMessage('欢迎来到Admin管理页面！🌸撒花🌸<br><br>😀DK Blog 祝你有美好的心情！😀','info')
+showMessage('欢迎来到Admin管理页面！🌸撒花🌸<br><br>😀DK Blog 祝你有美好的心情！😀', 'info')
 </script>
 
 <template>
-    <!-- 外层容器 -->
-    <el-container>
-        
-        <!-- 左边侧边栏 -->
-        <el-aside :width="menuStore.menuWidth" class="transition-all">
-            <AdminMenu/>
-        </el-aside>
-        
-        <!-- 右边区域主要内容 -->
+    <div>
+        <!-- 外层容器 -->
         <el-container>
-            <!-- 右边顶栏 -->
-            <el-header>
-                <AdminHeader/>
-            </el-header>
+            <!-- 左边侧边栏 -->
+            <el-aside :width="menuStore.menuWidth" class="transition-all">
+                <AdminMenu/>
+            </el-aside>
             
-            <!-- 右边容器 -->
-            <el-main class="mt-10">
-                <!-- 标签导航栏，在Header中导入 -->
-                <!--<AdminTagList/>-->
+            <!-- 右边区域主要内容 -->
+            <el-container>
+                <!-- 右边顶栏 -->
+                <el-header>
+                    <AdminHeader/>
+                </el-header>
                 
-                <!-- 主内容（根据路由动态展示不同页面） -->
-                <router-view v-slot="{ Component }">
-                    <!-- 用于优化路由跳转时，组件的加载css，即组件的过渡效果 -->
-                    <Transition name="fade">
-                        <!-- 用于缓存vue组件，不用每次加载组件的时候，都要和后端请求数据 -->
-                        <!-- max 指定最多缓存 10 个组件 -->
-                        <KeepAlive :max="10">
-                            <component :is="Component"></component>
-                        </KeepAlive>
-                    </Transition>
-                </router-view>
-            </el-main>
-            
-            <!-- 右边页脚 -->
-            <el-footer>
-                <AdminFooter/>
-            </el-footer>
+                <!-- 右边容器 -->
+                <el-main class="mt-10">
+                    <!-- 标签导航栏，在Header中导入 -->
+                    <!--<AdminTagList/>-->
+                    
+                    <!-- 主内容（根据路由动态展示不同页面） -->
+                    <router-view v-slot="{ Component }">
+                        <!-- 用于优化路由跳转时，组件的加载css，即组件的过渡效果 -->
+                        <Transition name="fade">
+                            <!-- 用于缓存vue组件，不用每次加载组件的时候，都要和后端请求数据 -->
+                            <!-- max 指定最多缓存 10 个组件 -->
+                            <KeepAlive :max="10">
+                                <component :is="Component"></component>
+                            </KeepAlive>
+                        </Transition>
+                    </router-view>
+                </el-main>
+                
+                <!-- 右边页脚 -->
+                <el-footer>
+                    <AdminFooter/>
+                </el-footer>
+            </el-container>
+        
         </el-container>
-    
-    </el-container>
+    </div>
 </template>
 
 <style scoped>
@@ -102,7 +104,7 @@ showMessage('欢迎来到Admin管理页面！🌸撒花🌸<br><br>😀DK Blog �
 
 <!--固定页脚-->
 <style>
-.el-container{
+.el-container {
     min-height: 100vh;
 }
 </style>
