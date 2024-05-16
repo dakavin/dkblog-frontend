@@ -4,16 +4,15 @@ js 代码, setup 标识通常和组合式 API 搭配使用,
 用于告诉 Vue 需要在编译时进行一些处理，让我们可以更简洁地使用组合式 API
 */
 import zhCn from 'element-plus/dist/locale/zh-cn.mjs'
-import cursorInit from "@/composables/cursor.js";
-import {initializeCustomCursor } from '@/composables/cursor-new.js'
+// import cursorInit from "@/composables/cursor.js";
+import cursorInit from '@/composables/cursor-new.js'
 import {onMounted} from "vue";
 
 const locale = zhCn
 
 onMounted(() => {
     // 自定义鼠标
-    // cursorInit();
-    initializeCustomCursor();
+    cursorInit();
     
     // 屏蔽右键
     document.oncontextmenu = () => {

@@ -5,6 +5,10 @@ GitHub：https://github.com/dakavin
 版权所有，请勿删除
 */
 
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 @charset "utf-8";
 
 /*全局样式*/
@@ -15,9 +19,12 @@ body {
   height: 100%;
   margin: 0;
   padding: 0;
-  background-color: #ffffff;
+  background-color: #f4f4f4; /* 使用来自main.css的背景颜色 */
   overflow-y: hidden; /* 禁止body本身的滚动 */
-  font-family: "HarmonyOS_Regular", sans-serif;
+  font-family: "HarmonyOS_Regular", sans-serif, -apple-system-font, BlinkMacSystemFont, Helvetica Neue, PingFang SC, Hiragino Sans GB, Microsoft YaHei UI, Microsoft YaHei, Arial; /* 合并字体样式 */
+  color: #4c4e4d; /* 字体颜色 */
+  font-size: 16px; /* 字体大小 */
+  line-height: 1.6; /* 行高 */
 }
 
 /* #app 容器样式 */
@@ -27,6 +34,10 @@ body {
   height: 100vh;
   overflow-y: auto; /* 允许 #app 容器垂直滚动 */
   //z-index: 0; /*影响了前台页面退出弹窗！！！*/
+}
+
+[type='text']:focus, [type='email']:focus, [type='url']:focus, [type='password']:focus, [type='number']:focus, [type='date']:focus, [type='datetime-local']:focus, [type='month']:focus, [type='search']:focus, [type='tel']:focus, [type='time']:focus, [type='week']:focus, [multiple]:focus, textarea:focus, select:focus {
+  box-shadow: 0 0 0 1px transparent inset!important;
 }
 
 // 卡片样式
@@ -225,33 +236,47 @@ scrollbar-thumb {
 //  }
 //}
 
-/* 在CSS文件中 */
-/* 在CSS文件中 */
 #cursor {
-  width: 20px;
-  height: 20px;
-  position: absolute;
-  border: 2px solid #fff; /* 修改边框颜色为白色以符合星空主题 */
+  position: fixed;
+  width: 16px;
+  height: 16px;
+  background: radial-gradient(circle, rgb(5, 140, 215), rgba(0, 0, 0, 0.5));
   border-radius: 50%;
-  transform: translate(-50%, -50%);
-  pointer-events: none;
   z-index: 9999;
-  background: radial-gradient(circle, rgba(173, 216, 230, 1) 0%, rgb(63, 158, 255) 100%); /* 偏蓝色星空渐变背景 */
-  box-shadow: 0 0 10px rgba(173, 216, 230, 0.8), 0 0 20px rgba(0, 0, 255, 0.5); /* 光晕效果 */
-  transition: transform 0.1s ease, background 0.1s ease, box-shadow 0.1s ease; /* 增加动画效果 */
+  pointer-events: none;
+  transition: transform 0.15s ease-in-out, opacity 0.15s ease-in-out, background 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
 
-.clickable-cursor {
-  width: 25px; /* 点击状态下的大小 */
-  height: 25px;
-  border: 2px solid #00f; /* 点击状态下的边框颜色 */
-  background: radial-gradient(circle, rgba(173, 216, 230, 1) 0%, rgba(0, 0, 255, 1) 100%); /* 点击状态下的渐变背景 */
-  box-shadow: 0 0 10px rgba(173, 216, 230, 0.8), 0 0 20px rgba(0, 0, 255, 0.5); /* 点击状态下的光晕效果 */
+#cursor.hidden {
+  opacity: 0;
+}
+
+#cursor.active {
+  transform: scale(0.7);
+  background: radial-gradient(circle, rgb(18, 150, 219), rgb(99, 169, 171));
+  box-shadow: 0 0 10px rgb(18, 150, 219);
+}
+
+#cursor.hover {
+  background: radial-gradient(circle, rgba(0, 255, 13, 0.8), rgba(128, 189, 128, 0.8));
+  transform: scale(1.2);
+  box-shadow: 0 0 10px rgba(0, 255, 13, 0.8);
 }
 
 * {
   cursor: none !important; /* 强制所有元素使用自定义光标 */
 }
+
+
+
+
+
+
+
+
+
+
+
 
 
 

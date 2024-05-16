@@ -1,7 +1,7 @@
-import '@/assets/main.css'
+import '@/assets/style.scss'
 import 'animate.css';
 import 'nprogress/nprogress.css'
-import '@/styles/style.scss'
+
 
 // 引入 creatApp 方法
 import { createApp } from 'vue'
@@ -15,6 +15,7 @@ import '@/permission.js'
 import * as ElementPlusIconsVue from '@element-plus/icons-vue'
 // 导入 全局状态管理 pinia（封装了持久化插件）
 import pinia from '@/stores'
+
 
 
 // 创建应用，并将 App 根组件挂载到 <div id="#app"></div> 中

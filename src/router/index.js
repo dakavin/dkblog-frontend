@@ -7,6 +7,7 @@ import AdminCategoryList from "@/pages/admin/category-list.vue"
 import AdminTagList from "@/pages/admin/tag-list.vue"
 import AdminBlogSetting from "@/pages/admin/blog-settings.vue"
 import AccountSetting from "@/pages/admin/account-setting.vue"
+import ArchiveList from "@/pages/frontend/archive-list.vue";
 import {createRouter, createWebHashHistory} from "vue-router";
 
 // 统一在这里声明所有路由
@@ -20,6 +21,14 @@ const routes = [
         meta: {
             // 页面标题
             title: 'DK Blog 首页'
+        }
+    },
+    {
+        // 文章归档页
+        path: '/archive/list',
+        component: ArchiveList,
+        meta: {
+            title: 'DK Blog 归档页'
         }
     },
     {
