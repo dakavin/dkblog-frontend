@@ -78,11 +78,14 @@ const currPath = ref(route.path)
                     </div>
                     
                     <!-- 登录 -->
-                    <div class="text-gray-900 ml-1 mr-1 hover:text-blue-700" v-if="!isLogin"
-                         @click="$router.push('/login')">登录</div>
+                    <button v-if="!isLogin"
+                            class="px-4 py-2 bg-custom-blue text-white text-sm rounded-lg shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-75"
+                            @click="$router.push('/login')">
+                        登 录
+                    </button>
                     <!-- 已经登录，展示用户头像 -->
                     <button id="dropdownDefaultButton" data-dropdown-toggle="dropdown" v-else
-                            class="text-white ml-2 focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                            class="text-white ml-2 mr-2 md:mr-0 focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
                             type="button">
                         <!-- 用户登录头像 -->
                         <img class="w-8 h-8 rounded-full" :src="blogSettingsStore.blogSettings.avatar" alt="user photo">
@@ -145,7 +148,7 @@ const currPath = ref(route.path)
                         </div>
                         <input type="text" id="search-navbar"
                                class="block w-full p-2 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                               placeholder="Search...">
+                               placeholder="🤓看点啥呢。。。">
                     </div>
                     <ul
                         class="flex flex-col p-4 md:p-0 mt-4 font-medium border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">

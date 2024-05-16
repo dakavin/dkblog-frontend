@@ -6,7 +6,11 @@ export default {
     "./node_modules/flowbite/**/*.js",
   ],
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        'custom-blue': '#1296db',  // 添加自定义的颜色名称和值
+      }
+    },
   },
   plugins: [
     require('flowbite/plugin')
