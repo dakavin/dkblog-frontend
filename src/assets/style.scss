@@ -19,7 +19,7 @@ body {
   height: 100%;
   margin: 0;
   padding: 0;
-  background-color: #f4f4f4; /* 使用来自main.css的背景颜色 */
+  background: linear-gradient(to right, #def6f1, #ffffff); /* 应用浅蓝到白色渐变背景色 */
   overflow-y: hidden; /* 禁止body本身的滚动 */
   font-family: "HarmonyOS_Regular", sans-serif, -apple-system-font, BlinkMacSystemFont, Helvetica Neue, PingFang SC, Hiragino Sans GB, Microsoft YaHei UI, Microsoft YaHei, Arial; /* 合并字体样式 */
   color: #4c4e4d; /* 字体颜色 */
