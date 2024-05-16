@@ -4,6 +4,7 @@ import {CircleCloseFilled, RefreshRight, Search} from "@element-plus/icons-vue";
 import {reactive, ref} from 'vue'
 import moment from "moment";
 import {showMessage, showModel} from "@/composables/util.js";
+import {setupPagination} from "@/composables/pagination.js";
 // 引入对话框弹出组件
 import {
     deleteArticle,
@@ -362,8 +363,8 @@ const updateSubmit = () => {
         })
     })
 }
-
-
+// 调整分页在不同客户端的样式
+const {paginationLayout } = setupPagination()
 </script>
 
 <template>
@@ -455,7 +456,7 @@ const updateSubmit = () => {
             <div class="mt-10 flex justify-center">
                 <el-pagination v-model:current-page="current" v-model:page-size="size"
                                :page-sizes="[5,10,20,50]" :small="false" :background="true"
-                               layout="prev, pager, next, jumper,total,sizes" :total="total"
+                               :layout="paginationLayout" :total="total"
                                @size-change="handleSizeChange" @current-change="getTableData"/>
             </div>
         </el-card>

@@ -7,6 +7,7 @@ import {addTag, deleteTag, getTagPageList, updateTag} from "@/api/admin/tag.js";
 import {showMessage, showModel} from "@/composables/util.js";
 // 引入对话框弹出组件
 import FormDialog from "@/components/FormDialog.vue";
+import {setupPagination} from "@/composables/pagination.js";
 
 // 分页查询的标签名称
 const searchTagName = ref('')
@@ -246,6 +247,8 @@ const onUpdateSubmit = () => {
     })
 }
 
+// 调整分页在不同客户端的样式
+const {paginationLayout } = setupPagination()
 </script>
 
 <template>
@@ -327,7 +330,7 @@ const onUpdateSubmit = () => {
             <div class="mt-10 flex justify-center">
                 <el-pagination v-model:current-page="current" v-model:page-size="size"
                                :page-sizes="[5,10,20,50]" :small="false" :background="true"
-                               layout="prev, pager, next, jumper,total,sizes" :total="total"
+                               :layout="paginationLayout" :total="total"
                                @size-change="handleSizeChange" @current-change="getTableData"/>
             </div>
         </el-card>
