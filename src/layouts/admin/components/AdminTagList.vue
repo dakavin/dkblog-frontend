@@ -69,9 +69,6 @@ const { menuStore, activeTab, tabList, tabChange, removeTab, handleCloseTab } = 
     height: 32px;
 }
 
-.el-tabs__header {
-    margin-bottom: 0;
-}
 
 .el-tabs--card > .el-tabs__header .el-tabs__nav {
     border: 0;
@@ -88,13 +85,6 @@ const { menuStore, activeTab, tabList, tabChange, removeTab, handleCloseTab } = 
     border: 0;
 }
 
-.el-tabs__nav-prev, .el-tabs__nav-next {
-    line-height: 35px;
-}
 
-.is-disabled {
-    cursor: not-allowed;
-    color: #d1d5db;
-}
 
 </style>
