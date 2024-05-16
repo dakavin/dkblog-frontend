@@ -7,6 +7,7 @@ import {useRouter} from "vue-router";
 import {showMessage, showModel} from "@/composables/util.js";
 import {reactive, ref, watch} from 'vue'
 import {updateAdminPassword} from "@/api/admin/user.js";
+import AdminTagList from "@/layouts/admin/components/AdminTagList.vue";
 // 引入对话框弹出组件
 import FormDialog from "@/components/FormDialog.vue";
 
@@ -38,7 +39,7 @@ const formRef = ref(null)
 const form = reactive({
     username: userStore.userInfo.username || '',
     password: '',
-    originPassword:'',
+    originPassword: '',
     rePassword: '',
 })
 
@@ -56,7 +57,7 @@ const rules = {
 // const dialogVisible = ref(false)
 const formDialogRef = ref(null)
 // 修改密码按钮点击事件
-const changePwdBtnClick = ()=>{
+const changePwdBtnClick = () => {
     formDialogRef.value.open()
 }
 
@@ -72,8 +73,8 @@ const onSubmit = () => {
             showMessage('两次输入的密码不一致！', 'warning')
             return
         }
-        if (form.originPassword === form.password){
-            showMessage('新密码不能和旧密码相同！','warning')
+        if (form.originPassword === form.password) {
+            showMessage('新密码不能和旧密码相同！', 'warning')
             return
         }
         // 显示提交loading
@@ -97,7 +98,7 @@ const onSubmit = () => {
                 showMessage(msg, 'error')
             }
             
-        }).finally(()=>formDialogRef.value.closeBtnLoading()) // 隐藏提交loading
+        }).finally(() => formDialogRef.value.closeBtnLoading()) // 隐藏提交loading
     })
 }
 
@@ -191,7 +192,7 @@ function logout() {
                     <span class="el-dropdown-link flex items-center justify-center text-gray-700 text-xs">
                         <!-- 头像 Avatar -->
                         <el-avatar class="mr-2" :size="25" src="./src/assets/default_avatar.webp"/>
-                        {{ userStore.userInfo.username }}
+                        <span class="font-bold">{{ userStore.userInfo.username }}</span>
                         <el-icon class="el-icon--right">
                             <arrow-down/>
                         </el-icon>
@@ -207,13 +208,15 @@ function logout() {
                 <!-- 修改密码弹窗 -->
                 <FormDialog ref="formDialogRef" title="修改密码" destoryOnClose @submit="onSubmit">
                     <!-- 修改密码表单 -->
-                    <el-form ref="formRef" :rules="rules" :model="form" >
+                    <el-form ref="formRef" :rules="rules" :model="form">
                         <el-form-item label="用户名" prop="username" label-width="100px">
                             <!-- 输入框组件 -->
-                            <el-input size="large" v-model="form.username" placeholder="请输入用户名" clearable disabled/>
+                            <el-input size="large" v-model="form.username" placeholder="请输入用户名" clearable
+                                      disabled/>
                         </el-form-item>
                         <el-form-item label="旧密码" prop="originPassword" label-width="100px">
-                            <el-input size="large" type="password" v-model="form.originPassword" placeholder="请输入旧密码"
+                            <el-input size="large" type="password" v-model="form.originPassword"
+                                      placeholder="请输入旧密码"
                                       clearable show-password/>
                         </el-form-item>
                         <el-form-item label="新密码" prop="password" label-width="100px">
@@ -221,14 +224,15 @@ function logout() {
                                       clearable show-password/>
                         </el-form-item>
                         <el-form-item label="确认新密码" prop="rePassword" label-width="100px">
-                            <el-input size="large" type="password" v-model="form.rePassword" placeholder="请再次输入新密码"
+                            <el-input size="large" type="password" v-model="form.rePassword"
+                                      placeholder="请再次输入新密码"
                                       clearable show-password/>
                         </el-form-item>
                     </el-form>
                 </FormDialog>
-            
             </div>
         </div>
+        <AdminTagList></AdminTagList>
     </el-affix>
 </template>
 

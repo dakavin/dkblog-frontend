@@ -32,9 +32,9 @@ showMessage('😀DK Blog 祝你有美好的心情！😀')
             </el-header>
             
             <!-- 右边容器 -->
-            <el-main>
-                <!-- 标签导航栏 -->
-                <AdminTagList/>
+            <el-main class="mt-10">
+                <!-- 标签导航栏，在Header中导入 -->
+                <!--<AdminTagList/>-->
                 
                 <!-- 主内容（根据路由动态展示不同页面） -->
                 <router-view v-slot="{ Component }">

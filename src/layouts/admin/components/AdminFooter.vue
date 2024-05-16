@@ -40,14 +40,14 @@ const siteStartDate = "2023-4-28";
     footer {
         flex-direction: column;
         justify-content: center;
-        padding: 20px;
+        padding: 3px;
     }
     footer > div {
-        margin-bottom: 10px;  /* 增加每个部分之间的间隔 */
+        margin-bottom: 8px;  /* 增加每个部分之间的间隔 */
         display: block;      /* 确保所有内容都显示 */
     }
     footer a {
-        padding: 8px; /* 增加链接的点击区域 */
+        padding: 3px; /* 增加链接的点击区域 */
     }
 }
 </style>

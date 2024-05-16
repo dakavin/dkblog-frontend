@@ -6,9 +6,10 @@ const { menuStore, activeTab, tabList, tabChange, removeTab, handleCloseTab } = 
 
 <template>
     <div
-        class="fixed top-[64px] h-[44px] px-2 right-1.5 z-50 flex items-center bg-white transition-all duration-300 shadow"
+        class=" top-[64px] h-[43px] px-2 right-0 z-50 flex items-center bg-white transition-all duration-300 "
         :style="{left: menuStore.menuWidth}">
         <!-- 左边：标签导航栏 -->
+        <!-- todo：有空实现左右滑动 -->
         <el-tabs v-model="activeTab" type="card" class="demo-tabs" @tab-remove="removeTab" @tab-change="tabChange"
                  style="min-width: 10px;">
             <el-tab-pane v-for="item in tabList" :key="item.path" :label="item.title" :name="item.path"
@@ -17,7 +18,7 @@ const { menuStore, activeTab, tabList, tabChange, removeTab, handleCloseTab } = 
         </el-tabs>
         
         <!-- 右侧：下拉菜单 -->
-        <span class="ml-auto flex items-center justify-center h-[32px] w-[32px]">
+        <span class="ml-auto flex items-center justify-center h-[32px] w-[32px] mr-2">
             <el-dropdown @command="handleCloseTab">
                 <span class="el-dropdown-link">
                     <el-icon>

@@ -12,7 +12,7 @@ export function showMessage(message = '提示内容', type='success', customClas
         customClass,
         showClose: false,
         center: true,
-        duration: 2000,
+        duration: 1500,
     })
 }
 
