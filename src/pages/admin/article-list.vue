@@ -1,7 +1,7 @@
 <script setup>
 // 引入所需图标
-import {CircleCloseFilled, RefreshRight, Search} from "@element-plus/icons-vue";
-import {reactive, ref} from 'vue'
+import {RefreshRight, Search} from "@element-plus/icons-vue";
+import {reactive, ref, computed} from 'vue'
 import moment from "moment";
 import {showMessage, showModel} from "@/composables/util.js";
 import {setupPagination} from "@/composables/pagination.js";
@@ -18,6 +18,7 @@ import 'md-editor-v3/lib/style.css'
 import {uploadFile} from "@/api/admin/file.js";
 import {getCategorySelectList} from "@/api/admin/category.js";
 import {getTagSelectList, searchTags} from "@/api/admin/tag.js";
+import {useWindowSize} from "@/api/frontend/useWindowSize.js";
 
 
 // --> 下面是查询文章的操作 <--
@@ -364,7 +365,23 @@ const updateSubmit = () => {
     })
 }
 // 调整分页在不同客户端的样式
-const {paginationLayout,small } = setupPagination()
+const {paginationLayout, small} = setupPagination()
+// 响应式布局，调整表单内容显示和操作显示
+const {width} = useWindowSize()
+const colunmWidth = computed(() => {
+    if (width.value <= 768) {
+        return 110
+    } else if (width.value <= 1477) {
+        return 180
+    } else {
+        return ''
+    }
+})
+const btnSize = computed(() => {
+    return width.value <= 1527 ? 'small' : 'default'
+})
+
+
 </script>
 
 <template>
@@ -377,7 +394,8 @@ const {paginationLayout,small } = setupPagination()
                 <div class="flex flex-col md:flex-row md:items-center w-full">
                     <div class="flex items-center md:w-auto ml-5">
                         <el-text class="text-left w-13 hide-on-mobile">文章名称</el-text>
-                        <el-input v-model="searchArticleTitle" placeholder="请输入文章标题（支持模糊查询）" class="ml-3" style="width: 300px;"/>
+                        <el-input v-model="searchArticleTitle" placeholder="请输入文章标题（支持模糊查询）" class="ml-3"
+                                  style="width: 300px"/>
                     </div>
                 </div>
                 
@@ -395,17 +413,17 @@ const {paginationLayout,small } = setupPagination()
                 <!-- 查询和重置按钮 -->
                 <div class="flex flex-row justify-center mt-3 md:mt-0 md:ml-5 space-x-3">
                     <el-button type="primary" :icon="Search" @click="getTableData">
-                        <span >查询</span>
+                        <span>查询</span>
                     </el-button>
                     <el-button :icon="RefreshRight" @click="reset">
-                        <span >重置</span>
+                        <span>重置</span>
                     </el-button>
                 </div>
             </div>
         </el-card>
         
         <el-card shadow="never">
-            <!-- 分类数据的分页列表 -->
+            <!-- 文章数据的分页列表 -->
             <el-table :data="tableData" border stripe style="width: 100%" v-loading="tableLoading">
                 <el-table-column type="index" label="序号" width="60" align="center"/>
                 <el-table-column prop="title" label="标题" width="180" align="center"/>
@@ -426,25 +444,27 @@ const {paginationLayout,small } = setupPagination()
                 </el-table-column>
                 <el-table-column prop="createTime" label="创建时间" width="180" align="center"/>
                 <el-table-column prop="updateTime" label="更新时间" width="180" align="center"/>
-                <el-table-column label="操作" fixed="right" align="center">
+                <el-table-column label="操作" align="center" :width="colunmWidth">
                     <template #default="scope">
-                        <el-button size="default" @click="showArticleUpdateEditor(scope.row)">
-                            <el-icon class="mr-1">
-                                <Edit/>
-                            </el-icon>
-                            编辑
-                        </el-button>
-                        <el-button size="default" type="danger" @click="deleteArticleSubmit(scope.row)">
-                            <el-icon class="mr-1">
-                                <Delete/>
-                            </el-icon>
-                            删除
-                        </el-button>
+                        <div class="action-buttons">
+                            <el-button :size="btnSize" @click="showArticleUpdateEditor(scope.row)">
+                                <el-icon class="">
+                                    <Edit/>
+                                </el-icon>
+                                <span class="hide-on-mobile">编辑</span>
+                            </el-button>
+                            <el-button :size="btnSize" type="danger" @click="deleteArticleSubmit(scope.row)">
+                                <el-icon class="">
+                                    <Delete/>
+                                </el-icon>
+                                <span class="hide-on-mobile">删除</span>
+                            </el-button>
+                        </div>
                     </template>
                 </el-table-column>
             </el-table>
             
-            <!-- 新增分类按钮 -->
+            <!-- 新增文章按钮 -->
             <el-button class="mt-4" type="primary" style="width: 100%" @click="isArticlePublishEditorShow = true">
                 <el-icon class="mr-1">
                     <EditPen/>
@@ -644,10 +664,21 @@ const {paginationLayout,small } = setupPagination()
 .el-select--large {
     width: 600px;
 }
+
+.action-buttons {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.el-button:last-child {
+    margin-right: 0;
+}
 </style>
 
 <style>
 .md-editor-footer {
     height: 40px;
 }
+
 </style>

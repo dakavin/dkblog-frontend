@@ -14,7 +14,7 @@ const siteStartDate = "2023-4-28";
         </div>
         <!-- Made by -->
         <div class="mb-4 md:mb-0">
-            Made by
+            Made By
             <a href="https://gitee.com/Dakkk_mike" target="_blank" class="underline gradient-text">
                 dakkk
             </a>

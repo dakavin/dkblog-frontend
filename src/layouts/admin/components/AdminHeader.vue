@@ -232,7 +232,9 @@ function logout() {
                 </FormDialog>
             </div>
         </div>
-        <AdminTagList></AdminTagList>
+        <div>
+        <AdminTagList/>
+        </div>
     </el-affix>
 </template>
 
@@ -243,5 +245,4 @@ function logout() {
         display: none;
     }
 }
-
 </style>

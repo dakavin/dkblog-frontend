@@ -1,13 +1,14 @@
 <script setup>
 // 引入所需图标
 import {RefreshRight, Search} from "@element-plus/icons-vue";
-import {reactive, ref} from 'vue'
+import {reactive, ref,computed} from 'vue'
 import moment from "moment";
 import {addTag, deleteTag, getTagPageList, updateTag} from "@/api/admin/tag.js";
 import {showMessage, showModel} from "@/composables/util.js";
 // 引入对话框弹出组件
 import FormDialog from "@/components/FormDialog.vue";
 import {setupPagination} from "@/composables/pagination.js";
+import {useWindowSize} from "@/api/frontend/useWindowSize.js";
 
 // 分页查询的标签名称
 const searchTagName = ref('')
@@ -249,6 +250,20 @@ const onUpdateSubmit = () => {
 
 // 调整分页在不同客户端的样式
 const {paginationLayout,small } = setupPagination()
+// 响应式布局，调整表单内容显示和操作显示
+const {width} = useWindowSize()
+const colunmWidth = computed(() => {
+    if (width.value <= 768) {
+        return 110
+    } else if (width.value <= 1477) {
+        return 180
+    } else {
+        return ''
+    }
+})
+const btnSize = computed(() => {
+    return width.value <= 1527 ? 'small' : 'default'
+})
 </script>
 
 <template>
@@ -300,20 +315,22 @@ const {paginationLayout,small } = setupPagination()
                 <el-table-column prop="description" label="标签描述" width="300" align="center"/>
                 <el-table-column prop="createTime" label="创建时间" width="180" align="center"/>
                 <el-table-column prop="updateTime" label="更新时间" width="180" align="center"/>
-                <el-table-column label="操作" fixed="right"  align="center">
+                <el-table-column label="操作" align="center" :width="colunmWidth">
                     <template #default="scope">
-                        <el-button size="default" @click="updateTagBtnClick(scope.row)">
-                            <el-icon class="mr-1">
-                                <Edit/>
-                            </el-icon>
-                            编辑
-                        </el-button>
-                        <el-button size="default" type="danger" @click="deleteTagSubmit(scope.row)">
-                            <el-icon class="mr-1">
-                                <Delete/>
-                            </el-icon>
-                            删除
-                        </el-button>
+                        <div class="action-buttons">
+                            <el-button :size="btnSize" @click="showArticleUpdateEditor(scope.row)">
+                                <el-icon class="">
+                                    <Edit/>
+                                </el-icon>
+                                <span class="hide-on-mobile">编辑</span>
+                            </el-button>
+                            <el-button :size="btnSize" type="danger" @click="deleteArticleSubmit(scope.row)">
+                                <el-icon class="">
+                                    <Delete/>
+                                </el-icon>
+                                <span class="hide-on-mobile">删除</span>
+                            </el-button>
+                        </div>
                     </template>
                 </el-table-column>
             </el-table>
@@ -369,5 +386,13 @@ const {paginationLayout,small } = setupPagination()
 </template>
 
 <style scoped>
+.action-buttons {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
 
+.el-button:last-child {
+    margin-right: 0;
+}
 </style>
