@@ -86,8 +86,8 @@ function getTableData() {
     
     // 调用后台对应的接口
     getArticlePageList({
-        current: current.value, size: size.value, startDate: startDate.value,
-        endDate: endDate.value, title: searchArticleTitle.value
+        current: current.value, size: size.value, startDateTime: startDate.value,
+        endDateTime: endDate.value, title: searchArticleTitle.value
     }).then((res) => {
         if (res.success === true) {
             tableData.value = res.data
@@ -346,7 +346,7 @@ const updateSubmit = () => {
         }
         // 请求更新文章接口
         updateArticle(updateArticleForm).then((res) => {
-            if (res.success === false){
+            if (res.success === false) {
                 // 获取服务端返回的错误信息
                 let message = res.message
                 // 提示错误消息
@@ -369,23 +369,37 @@ const updateSubmit = () => {
 <template>
     <div>
         <!-- 表头分页查询条件，shadow指定card 卡片组件没有阴影 -->
-        <el-card shadow="never" class="mb-5">
+        <el-card shadow="never" class="mb-3">
             <!-- flex布局，内容垂直居中 -->
-            <div class="flex items-center">
-                <el-text>文章名称</el-text>
-                <div class="ml-3 w-60 mr-5">
-                    <el-input v-model="searchArticleTitle" placeholder="请输入文章标题（支持模糊查询）"/>
+            <div class="flex flex-col md:flex-row items-center space-y-3 md:space-y-0 md:space-x-5">
+                <!-- 文章名称 -->
+                <div class="flex flex-col md:flex-row md:items-center w-full">
+                    <div class="flex items-center md:w-auto ml-5">
+                        <el-text class="text-left w-13 hide-on-mobile">文章名称</el-text>
+                        <el-input v-model="searchArticleTitle" placeholder="请输入文章标题（支持模糊查询）" class="ml-3" style="width: 300px;"/>
+                    </div>
                 </div>
                 
-                <el-text>创建日期</el-text>
-                <div class="ml-3 w-30 mr-5">
-                    <el-date-picker v-model="pickDate" type="daterange" range-separator="至"
-                                    start-placeholder="开始时间" @change="datePickerChange"
-                                    end-placeholder="结束时间" size="default" :shortcuts="shortcuts"/>
+                <!-- 创建日期 -->
+                <div class="flex flex-col md:flex-row md:items-center w-full mt-3 md:mt-0">
+                    <div class="flex items-center w-full md:w-auto hide-on-mobile">
+                        <el-text class="text-left w-13 ">创建日期</el-text>
+                        <el-date-picker v-model="pickDate" type="daterange" range-separator="至"
+                                        start-placeholder="开始时间" @change="datePickerChange"
+                                        end-placeholder="结束时间" class="ml-3" style="width: 300px;"
+                                        size="default" :shortcuts="shortcuts"/>
+                    </div>
                 </div>
                 
-                <el-button type="primary" class="ml-3 cards" :icon="Search" @click="getTableData">查询</el-button>
-                <el-button class="ml-3 cards" :icon="RefreshRight" @click="reset">重置</el-button>
+                <!-- 查询和重置按钮 -->
+                <div class="flex flex-row justify-center mt-3 md:mt-0 md:ml-5 space-x-3">
+                    <el-button type="primary" :icon="Search" @click="getTableData">
+                        <span >查询</span>
+                    </el-button>
+                    <el-button :icon="RefreshRight" @click="reset">
+                        <span >重置</span>
+                    </el-button>
+                </div>
             </div>
         </el-card>
         
@@ -397,9 +411,10 @@ const updateSubmit = () => {
                 <!--增加文章的所属标签和分类-->
                 <el-table-column prop="categoryName" label="所属分类" width="100" align="center"/>
                 <el-table-column prop="tagIds" label="所属标签" width="200" align="center">
-                    <template #default = "scope">
+                    <template #default="scope">
                         <el-tag style="margin-right: 1px; margin-top: 1px"
-                                type="success" v-for="item in scope.row.tagNames">{{item}}</el-tag>
+                                type="success" v-for="item in scope.row.tagNames">{{ item }}
+                        </el-tag>
                     </template>
                 </el-table-column>
                 <!--<el-table-column prop="summary" label="文章概要" width="200" align="center"/>-->
@@ -507,7 +522,7 @@ const updateSubmit = () => {
                     </el-select>
                 </el-form-item>
                 
-                <el-form-item label="标签" prop="tags" >
+                <el-form-item label="标签" prop="tags">
                     <!-- 标签选择 -->
                     <span class="w-60">
                         <!-- 标签选择 -->

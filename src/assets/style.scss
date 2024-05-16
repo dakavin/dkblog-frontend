@@ -290,11 +290,17 @@ scrollbar-thumb {
   cursor: none !important; /* 强制所有元素使用自定义光标 */
 }
 
-// 手机端，固定menu的宽度为 64px
+// 手机端样式设置
 @media (max-width: 768px) {
+  // 手机端，固定menu的宽度为 64px
   .menu-sidebar {
     width: 64px !important;
   }
+  // 隐藏在手机端不需要的元素
+  .hide-on-mobile {
+    display: none;
+  }
+
 }
 
 

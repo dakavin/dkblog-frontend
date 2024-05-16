@@ -85,6 +85,13 @@ const { menuStore, activeTab, tabList, tabChange, removeTab, handleCloseTab } = 
     border: 0;
 }
 
+.el-tabs__nav-prev, .el-tabs__nav-next {
+    line-height: 35px;
+}
 
+.is-disabled {
+    cursor: not-allowed;
+    color: #d1d5db;
+}
 
 </style>

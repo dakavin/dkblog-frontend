@@ -73,8 +73,8 @@ function getTableData() {
     
     // 调用后台对应的接口
     getCategoryPageList({
-        current: current.value, size: size.value, startDate: startDate.value,
-        endDate: endDate.value, name: searchCategoryName.value
+        current: current.value, size: size.value, startDateTime: startDate.value,
+        endDateTime: endDate.value, name: searchCategoryName.value
     }).then((res) => {
         if (res.success === true) {
             tableData.value = res.data
@@ -251,23 +251,37 @@ const onUpdateSubmit = () => {
 <template>
     <div>
         <!-- 表头分页查询条件，shadow指定card 卡片组件没有阴影 -->
-        <el-card shadow="never" class="mb-5">
+        <el-card shadow="never" class="mb-3">
             <!-- flex布局，内容垂直居中 -->
-            <div class="flex items-center">
-                <el-text>分类名称</el-text>
-                <div class="ml-3 w-60 mr-5">
-                    <el-input v-model="searchCategoryName" placeholder="请输入分类名称（支持模糊查询）"/>
+            <div class="flex flex-col md:flex-row items-center space-y-3 md:space-y-0 md:space-x-5">
+                <!-- 分类名称 -->
+                <div class="flex flex-col md:flex-row md:items-center w-full">
+                    <div class="flex items-center md:w-auto ml-5">
+                        <el-text class="text-left w-13 hide-on-mobile">分类名称</el-text>
+                        <el-input v-model="searchCategoryName" placeholder="请输入分类名称（支持模糊查询）" class="ml-3" style="width: 300px;"/>
+                    </div>
                 </div>
                 
-                <el-text>创建日期</el-text>
-                <div class="ml-3 w-30 mr-5">
-                    <el-date-picker v-model="pickDate" type="daterange" range-separator="至"
-                                    start-placeholder="开始时间" @change="datePickerChange"
-                                    end-placeholder="结束时间" size="default" :shortcuts="shortcuts"/>
+                <!-- 创建日期 -->
+                <div class="flex flex-col md:flex-row md:items-center w-full mt-3 md:mt-0">
+                    <div class="flex items-center w-full md:w-auto hide-on-mobile">
+                        <el-text class="text-left w-13 ">创建日期</el-text>
+                        <el-date-picker v-model="pickDate" type="daterange" range-separator="至"
+                                        start-placeholder="开始时间" @change="datePickerChange"
+                                        end-placeholder="结束时间" class="ml-3" style="width: 300px;"
+                                        size="default" :shortcuts="shortcuts"/>
+                    </div>
                 </div>
                 
-                <el-button type="primary" class="ml-3 cards" :icon="Search" @click="getTableData">查询</el-button>
-                <el-button class="ml-3 cards" :icon="RefreshRight" @click="reset">重置</el-button>
+                <!-- 查询和重置按钮 -->
+                <div class="flex flex-row justify-center mt-3 md:mt-0 md:ml-5 space-x-3">
+                    <el-button type="primary" :icon="Search" @click="getTableData">
+                        <span >查询</span>
+                    </el-button>
+                    <el-button :icon="RefreshRight" @click="reset">
+                        <span >重置</span>
+                    </el-button>
+                </div>
             </div>
         </el-card>
         
