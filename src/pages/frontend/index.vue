@@ -1,13 +1,13 @@
 <script setup>
 import Header from '@/layouts/frontend/components/Header.vue'
-import Footer from '@/layouts/admin/components/AdminFooter.vue'
+// import Footer from '@/layouts/admin/components/AdminFooter.vue'
 import UserInfoCard from "@/layouts/frontend/components/UserInfoCard.vue";
 import CategoryListCard from "@/layouts/frontend/components/CategoryListCard.vue";
 import TagCard from "@/layouts/frontend/components/TagCard.vue";
 import {ref} from 'vue'
 import {getArticlePageList} from "@/api/frontend/article.js";
 import {showMessage} from "@/composables/util.js";
-// import Footer from '@/layouts/frontend/components/Footer.vue'
+import Footer from '@/layouts/frontend/components/Footer.vue'
 
 
 // --> 获取首页文章分页数据 <--
