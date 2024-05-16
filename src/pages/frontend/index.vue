@@ -125,7 +125,7 @@ getArticles(current.value)
                         <li v-for="(pageNo, index) in pages" :key="index">
                             <a @click="getArticles(pageNo)"
                                class="flex items-center justify-center px-4 h-10 leading-tight bg-white border border-gray-300 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
-                               :class="[pageNo == current ? 'text-blue-600 bg-blue-100 hover:bg-blue-100 hover:text-blue-700' : 'text-gray-500  hover:bg-gray-100 hover:text-gray-700']"
+                               :class="[pageNo == current ? 'text-blue-600 bg-blue-200 hover:bg-blue-100 hover:text-blue-700' : 'text-gray-500  hover:bg-gray-100 hover:text-gray-700']"
                             >
                                 {{ index + 1 }}
                             </a>
