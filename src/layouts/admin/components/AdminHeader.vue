@@ -171,7 +171,7 @@ function logout() {
                 <!-- 点击全屏展示 -->
                 <el-tooltip v-if="!isFullscreen" class="box-item" effect="dark" content="全屏" placement="bottom">
                     <div @click="toggle"
-                         class="w-[42px] h-[64px] cursor-pointer flex items-center justify-center text-gray-700 mr-5 hover:bg-gray-200">
+                         class="hide-on-mobile w-[42px] h-[64px] cursor-pointer flex items-center justify-center text-gray-700 mr-5 hover:bg-gray-200">
                         <el-icon>
                             <FullScreen/>
                         </el-icon>
