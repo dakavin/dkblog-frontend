@@ -79,7 +79,7 @@ const currPath = ref(route.path)
                     
                     <!-- 登录 -->
                     <button v-if="!isLogin"
-                            class="px-4 py-2 bg-custom-blue text-white text-sm rounded-lg shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-75"
+                            class="px-4 py-2 bg-custom-blue text-white text-sm rounded-lg shadow-md hover:bg-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-75"
                             @click="$router.push('/login')">
                         登 录
                     </button>
@@ -159,9 +159,10 @@ const currPath = ref(route.path)
                                aria-current="page">首页</a>
                         </li>
                         <li>
-                            <a href="#"
-                               class="block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-blue-500
-                               dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">分类</a>
+                            <a @click="router.push('/category/list')"
+                               :class="[currPath == '/category/list' ? 'text-blue-700' : 'text-gray-900']"
+                               class="block py-2 pl-3 pr-4 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-blue-500 dark:text-white
+                               dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">分类</a>
                         </li>
                         <li>
                             <a href="#"
@@ -201,15 +202,15 @@ const currPath = ref(route.path)
                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                               d="M10 11V6m0 8h.01M19 10a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
                     </svg>
-                    <h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">是否确定退出登录?
+                    <h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">🫣溜溜球?
                     </h3>
                     <button @click="logout" data-modal-hide="popup-modal" type="button"
-                            class="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center mr-2">
-                        确定
+                            class="text-white bg-custom-blue hover:bg-blue-400 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center mr-2">
+                        溜了
                     </button>
                     <button data-modal-hide="popup-modal" type="button"
                             class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600">
-                        取消</button>
+                        不溜</button>
                 </div>
             </div>
         </div>

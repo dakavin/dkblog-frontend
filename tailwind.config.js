@@ -8,7 +8,7 @@ export default {
   theme: {
     extend: {
       colors: {
-        'custom-blue': '#1296db',  // 添加自定义的颜色名称和值
+        'custom-blue': '#1296db',  // 添加自定义的颜色名称和值，Header中登录按钮使用
       }
     },
   },
