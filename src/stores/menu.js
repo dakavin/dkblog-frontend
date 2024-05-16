@@ -1,18 +1,29 @@
 import {defineStore} from "pinia";
-import {ref} from 'vue'
+import {ref, watch} from 'vue'
 
 export const useMenuStore = defineStore('menu', () => {
-    // 左边菜单栏默认宽度
-    const menuWidth = ref("250px")
+        const menuWidth = ref("250px")
+        const isMobile = ref(window.innerWidth <= 768)
 
-    // 展开或伸缩左边菜单栏
-    function handleMenuWidth() {
-        menuWidth.value = menuWidth.value === '250px' ? '64px' : '250px'
-    }
+        function handleMenuWidth() {
+            if (!isMobile.value) {
+                menuWidth.value = menuWidth.value === '250px' ? '64px' : '250px';
+            }
+        }
 
-    return {menuWidth, handleMenuWidth}
-},
-{
-    // 开启持久化
-    persist: true,
-})
+        function updateMenuWidthForDevice() {
+            isMobile.value = window.innerWidth <= 768;
+            menuWidth.value = isMobile.value ? '64px' : '250px';
+        }
+
+        window.addEventListener('resize', updateMenuWidthForDevice);
+
+        watch(isMobile, (newVal) => {
+            menuWidth.value = newVal ? '64px' : '250px';
+        });
+
+        return {menuWidth, handleMenuWidth}
+    },
+    {
+        persist: true
+    });

@@ -148,7 +148,7 @@ function logout() {
         <div class="bg-white h-[64px] flex pr-6 border-b border-slate-100">
             <!-- 左边栏收缩、展开 -->
             <div @click="handleMenuWidth"
-                 class="w-[42px] h-[64px] cursor-pointer  flex items-center justify-center text-gray-700 hover:bg-gray-200">
+                 class="menu-toggle w-[42px] h-[64px] cursor-pointer  flex items-center justify-center text-gray-700 hover:bg-gray-200">
                 <el-icon>
                     <!-- 实现收缩和展开时，显示不同的图标 -->
                     <Fold v-if="menuStore.menuWidth === '250px'"/>
@@ -236,6 +236,12 @@ function logout() {
     </el-affix>
 </template>
 
-<style scoped>
+<style>
+/*手机端隐藏菜单栏伸缩按钮*/
+@media (max-width: 768px) {
+    .menu-toggle {
+        display: none;
+    }
+}
 
 </style>

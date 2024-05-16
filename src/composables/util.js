@@ -13,6 +13,7 @@ export function showMessage(message = '提示内容', type='success', customClas
         showClose: false,
         center: true,
         duration: 1500,
+        dangerouslyUseHTMLString: true,  // 允许消息字符串包含HTML
     })
 }
 

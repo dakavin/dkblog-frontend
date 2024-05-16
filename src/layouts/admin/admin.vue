@@ -11,8 +11,7 @@ import {showMessage} from "@/composables/util.js";
 const menuStore = useMenuStore()
 
 // 欢迎语
-showMessage('欢迎来到Admin管理页面！🌸撒花🌸')
-showMessage('😀DK Blog 祝你有美好的心情！😀')
+showMessage('欢迎来到Admin管理页面！🌸撒花🌸<br><br>😀DK Blog 祝你有美好的心情！😀','info')
 </script>
 
 <template>
