@@ -248,7 +248,7 @@ const onUpdateSubmit = () => {
 }
 
 // 调整分页在不同客户端的样式
-const {paginationLayout } = setupPagination()
+const {paginationLayout,small } = setupPagination()
 </script>
 
 <template>
@@ -325,7 +325,7 @@ const {paginationLayout } = setupPagination()
             <!-- 分页的页码，数量等数据展示，页面跳转等事件 -->
             <div class="mt-10 flex justify-center">
                 <el-pagination v-model:current-page="current" v-model:page-size="size"
-                               :page-sizes="[5,10,20,50]" :small="false" :background="true"
+                               :page-sizes="[5,10,20,50]" :small="small" :background="true"
                                :layout="paginationLayout" :total="total"
                                @size-change="handleSizeChange" @current-change="getTableData"/>
             </div>
