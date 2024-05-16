@@ -38,11 +38,16 @@ const siteStartDate = "2023-4-28";
 
 @media (max-width: 768px) {
     footer {
+        flex-direction: column;
         justify-content: center;
         padding: 20px;
     }
-    footer > div:not(:nth-child(2)) {
-        display: none;
+    footer > div {
+        margin-bottom: 10px;  /* 增加每个部分之间的间隔 */
+        display: block;      /* 确保所有内容都显示 */
+    }
+    footer a {
+        padding: 8px; /* 增加链接的点击区域 */
     }
 }
 </style>
