@@ -1,6 +1,6 @@
 <script setup>
 import {useRoute, useRouter} from "vue-router"
-import {ref, computed} from 'vue'
+import {ref, computed,watch } from 'vue'
 import {useMenuStore} from "@/stores/menu.js";
 import {showMessage} from "@/composables/util.js";
 
@@ -44,6 +44,11 @@ const router = useRouter()
 
 // 根据路由地址判断那个菜单被选中，从而保持常亮
 const defaultActive = ref(route.path)
+
+// 监听路由变化，避免按下了tab，但是菜单栏没有变化
+watch(()=>route.path,(newPath)=>{
+    defaultActive.value = newPath
+})
 
 // 菜单选择事件，实现跳转
 // path来自于上面menu对象中的path！
