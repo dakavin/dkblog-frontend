@@ -4,7 +4,7 @@ const siteStartDate = "2023-4-28";
 </script>
 
 <template>
-    <footer class="flex flex-col md:flex-row md:justify-between items-center bg-white py-5 px-4 md:px-10 text-sm gradient-text">
+    <footer class="font-bold flex flex-col md:flex-row md:justify-between items-center bg-white py-5 px-4 md:px-10 text-sm gradient-text">
         <!-- Copyright -->
         <div class="mb-4 md:mb-0">
             <span v-if="siteStartDate?.length >= 4">
@@ -20,7 +20,7 @@ const siteStartDate = "2023-4-28";
             </a>
         </div>
         <!-- ICP Record -->
-        <div class="md:mb-0 hidden md:block">
+        <div class="md:mb-0 hidden md:block gradient-text">
             备案号:
             <a href="https://beian.miit.gov.cn" target="_blank" class="underline gradient-text">
                 粤ICP备2024241387号-1
