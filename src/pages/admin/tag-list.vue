@@ -344,7 +344,7 @@ const btnSize = computed(() => {
             </el-button>
             
             <!-- 分页的页码，数量等数据展示，页面跳转等事件 -->
-            <div class="mt-10 flex justify-center">
+            <div class="mt-4 flex justify-center">
                 <el-pagination v-model:current-page="current" v-model:page-size="size"
                                :page-sizes="[5,10,20,50]" :small="small" :background="true"
                                :layout="paginationLayout" :total="total"
