@@ -148,7 +148,8 @@ function logout() {
         <div class="bg-white h-[64px] flex pr-6 border-b border-slate-100">
             <!-- 左边栏收缩、展开 -->
             <div @click="handleMenuWidth"
-                 class="w-[42px] h-[64px] cursor-pointer flex items-center justify-center text-gray-700 hover:bg-gray-200">
+                 :class="{'menu-open': menuStore.menuWidth === '250px'}"
+                 class="menu-icon w-[42px] h-[64px] cursor-pointer flex items-center justify-center text-gray-700 hover:bg-gray-200">
                 <el-icon>
                     <!-- 实现收缩和展开时，显示不同的图标 -->
                     <Fold v-if="menuStore.menuWidth === '250px'"/>
@@ -161,7 +162,7 @@ function logout() {
                 <!-- 点击刷新页面 -->
                 <el-tooltip class="box-item" effect="dark" content="刷新当前页面" placement="bottom">
                     <div @click="handleRefresh"
-                         class="w-[42px] h-[64px] cursor-pointer flex items-center justify-center text-gray-700 mr-2 hover:bg-gray-200">
+                         class="hide-on-mobile w-[42px] h-[64px] cursor-pointer flex items-center justify-center text-gray-700 mr-2 hover:bg-gray-200">
                         <el-icon>
                             <Refresh/>
                         </el-icon>
@@ -243,6 +244,18 @@ function logout() {
 @media (max-width: 768px) {
     .menu-toggle {
         display: none;
+    }
+}
+
+/*手机端按钮移动*/
+.menu-icon {
+    transition: transform 0.3s ease;
+}
+
+/* 只针对屏幕宽度小于或等于768px的设备应用这些样式 */
+@media (max-width: 768px) {
+    .menu-open {
+        transform: translateX(250px);
     }
 }
 </style>

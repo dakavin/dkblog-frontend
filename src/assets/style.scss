@@ -30,8 +30,8 @@ body {
 /* #app 容器样式 */
 #app {
   position: relative;
-  width: 100vw;
-  height: 100vh;
+  width: 100%;
+  height: 100%;
   overflow-y: auto; /* 允许 #app 容器垂直滚动 */
   //z-index: 0; /*影响了前台页面退出弹窗！！！*/
 }
@@ -300,9 +300,56 @@ scrollbar-thumb {
   .hide-on-mobile {
     display: none;
   }
-
 }
 
+// 手机端admin.vue布局样式调整
+@media (max-width: 768px) {
+  /* 固定头部和侧边栏 */
+  .el-aside, .el-header {
+    position: fixed;
+    top: 0;
+    z-index: 200;  // 确保它们位于内容之上
+    width: 100%;
+  }
+
+  /* 固定侧边栏 */
+  .el-aside {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;  // 全屏高度
+    width: 64px;  // 侧边栏宽度
+    overflow-y: auto;  // 允许侧边栏内部滚动
+    z-index: 300;
+  }
+
+  .el-header {
+    right: 0;
+    left: 0;
+    height: 60px;  // 头部高度
+  }
+
+  /* 主内容区和页脚滚动 */
+  .el-main, .el-footer {
+    position: static;
+    margin-top: 108px;  // 头部高度，保证内容不被头部遮挡
+  }
+
+  .el-footer {
+    margin-top: 20px;  // 与主内容间隔
+  }
+
+  /* 让主内容区填充剩余空间 */
+  #app {
+    overflow-y: auto;  // 允许app内滚动
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0px;  // 侧边栏宽度
+    right: 0;
+    padding-bottom: 60px;  // 页脚高度
+  }
+}
 
 
 
