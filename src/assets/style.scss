@@ -332,11 +332,11 @@ scrollbar-thumb {
   /* 主内容区和页脚滚动 */
   .el-main, .el-footer {
     position: static;
-    margin-top: 108px;  // 头部高度，保证内容不被头部遮挡
+    margin-top: 68px;  // 头部高度，保证内容不被头部遮挡
   }
 
   .el-footer {
-    margin-top: 20px;  // 与主内容间隔
+    margin-top: 0px;  // 与主内容间隔
   }
 
   /* 让主内容区填充剩余空间 */

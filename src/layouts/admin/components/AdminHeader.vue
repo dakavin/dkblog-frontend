@@ -233,7 +233,7 @@ function logout() {
                 </FormDialog>
             </div>
         </div>
-        <div>
+        <div class="hide-on-mobile">
             <AdminTagList/>
         </div>
     </el-affix>
