@@ -5,6 +5,7 @@ import UserInfoCard from "@/layouts/frontend/components/UserInfoCard.vue";
 import CategoryListCard from "@/layouts/frontend/components/CategoryListCard.vue";
 import {ref} from 'vue'
 import {getTagList} from "@/api/frontend/tag.js";
+import {useRouter} from "vue-router";
 
 // 所有标签
 const tags = ref([])
@@ -13,6 +14,15 @@ getTagList().then((res) => {
         tags.value = res.data
     }
 })
+
+// 点击分类跳转功能实现
+// 引入路由
+const router = useRouter()
+// 跳转标签文章列表页
+const goTagArticleListPage = (id,name)=>{
+    // 跳转时通过 query 携带参数（标签 ID、标签名称）
+    router.push({path:'/tag/article/list',query:{id,name}})
+}
 </script>
 
 <template>
@@ -30,7 +40,8 @@ getTagList().then((res) => {
                         <!-- 标签标题 -->
                         <h2 class="mb-2 font-bold text-gray-900 uppercase dark:text-white">标签</h2>
                         <!-- 标签列表 -->
-                        <span v-for="(tag,index) in tags" :key="index"
+                        <span @click="goTagArticleListPage(tag.id,tag.name)"
+                            v-for="(tag,index) in tags" :key="index"
                               class="inline-block mb-1 cursor-pointer bg-green-100 text-green-800 text-xs font-medium mr-2
                               px-3 py-1 rounded-full hover:bg-green-200 hover:text-green-900 dark:bg-green-900 dark:text-green-300">
                         {{ tag.name }}

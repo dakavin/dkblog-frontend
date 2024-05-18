@@ -49,9 +49,14 @@ getArticles(current.value)
 // 引入路由
 const router = useRouter()
 // 跳转分类文章列表页
-const goCategoryArticleListPage = (id,name)=>{
+const goCategoryArticleListPage = (id, name) => {
     // 跳转时通过 query 携带参数（分类id、分类名称）
-    router.push({path:'/category/article/list',query:{id,name}})
+    router.push({path: '/category/article/list', query: {id, name}})
+}
+// 跳转标签文章列表页
+const goTagArticleListPage = (id, name) => {
+    // 跳转时通过 query 携带参数（标签 ID、标签名称）
+    router.push({path: '/tag/article/list', query: {id, name}})
 }
 </script>
 
@@ -80,9 +85,11 @@ const goCategoryArticleListPage = (id,name)=>{
                                     <div class="mb-3">
                                     <span v-for="(tag,tagIndex) in article.tags" :key="tagIndex"
                                           class="cursor-pointer bg-green-100 text-green-800 text-xs font-medium mr-2 px-2.5 py-0.5
-                                        rounded hover:bg-green-200 hover:text-green-900 dark:bg-green-900 dark:text-green-300">{{
-                                            tag.name
-                                        }}</span>
+                                        rounded hover:bg-green-200 hover:text-green-900 dark:bg-green-900 dark:text-green-300">
+                                        <span @click="goTagArticleListPage(tag.id,tag.name)">
+                                        {{ tag.name }}
+                                        </span>
+                                    </span>
                                     </div>
                                     <!-- 文章标题 -->
                                     <a href="#">
@@ -112,7 +119,8 @@ const goCategoryArticleListPage = (id,name)=>{
                                                   stroke-width="2"
                                                   d="M1 5v11a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1V6a1 1 0 0 0-1-1H1Zm0 0V2a1 1 0 0 1 1-1h5.443a1 1 0 0 1 .8.4l2.7 3.6H1Z"/>
                                         </svg>
-                                        <a @click="goCategoryArticleListPage(article.category.id,article.category.name)" class="text-gray-400 hover:underline">{{
+                                        <a @click="goCategoryArticleListPage(article.category.id,article.category.name)"
+                                           class="text-gray-400 hover:underline">{{
                                                 article.category.name
                                             }}</a>
                                     </p>
