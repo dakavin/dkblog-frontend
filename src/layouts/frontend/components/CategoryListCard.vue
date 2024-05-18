@@ -1,6 +1,7 @@
 <script setup>
 import { ref } from 'vue'
 import {getCategoryList} from "@/api/frontend/category.js";
+import {useRouter} from "vue-router";
 
 // 获取所有分类
 const categories = ref([])
@@ -9,6 +10,15 @@ getCategoryList().then((res)=>{
         categories.value = res.data
     }
 })
+
+// 点击分类跳转功能实现
+// 引入路由
+const router = useRouter()
+// 跳转分类文章列表页
+const goCategoryArticleListPage = (id,name)=>{
+    // 跳转时通过 query 携带参数（分类id、分类名称）
+    router.push({path:'/category/article/list',query:{id,name}})
+}
 </script>
 
 <template>
@@ -20,7 +30,8 @@ getCategoryList().then((res)=>{
         <!-- 分类列表 -->
         <div
             class="text-sm font-medium text-gray-600 bg-white rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white">
-            <a href="#" v-for="(category,index) in categories" :key="index"
+            <a @click="goCategoryArticleListPage(category.id,category.name)"
+                v-for="(category,index) in categories" :key="index"
                class="flex items-center w-full px-4 py-2 rounded-lg border-gray-200 cursor-pointer hover:bg-gray-100 hover:text-blue-700 dark:border-gray-600 dark:hover:bg-gray-600 dark:hover:text-white dark:focus:ring-gray-500 dark:focus:text-white">
                 <svg class="w-3.5 h-3.5 mr-1.5 dark:text-white" aria-hidden="true"
                      xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 21 18">

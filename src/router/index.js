@@ -9,6 +9,7 @@ import AdminBlogSetting from "@/pages/admin/blog-settings.vue"
 import AccountSetting from "@/pages/admin/account-setting.vue"
 import ArchiveList from "@/pages/frontend/archive-list.vue";
 import CategoryList from "@/pages/frontend/category-list.vue";
+import CategoryArticleList from "@/pages/frontend/category-article-list.vue";
 import {createRouter, createWebHashHistory} from "vue-router";
 
 // 统一在这里声明所有路由
@@ -38,6 +39,14 @@ const routes = [
         component: CategoryList,
         meta: {
             title: 'DK Blog 分类页'
+        }
+    },
+    {
+        // 分类-文章页
+        path: '/category/article/list',
+        component: CategoryArticleList,
+        meta: {
+            title: 'DK Blog 分类文章页'
         }
     },
     {

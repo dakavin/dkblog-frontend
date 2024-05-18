@@ -8,6 +8,7 @@ import {ref} from 'vue'
 import {getArticlePageList} from "@/api/frontend/article.js";
 import {showMessage} from "@/composables/util.js";
 import Footer from '@/layouts/frontend/components/Footer.vue'
+import {useRouter} from "vue-router";
 
 
 // --> 获取首页文章分页数据 <--
@@ -45,7 +46,13 @@ function getArticles(currentNo) {
 // 调用获取文章数据的方法
 getArticles(current.value)
 
-
+// 引入路由
+const router = useRouter()
+// 跳转分类文章列表页
+const goCategoryArticleListPage = (id,name)=>{
+    // 跳转时通过 query 携带参数（分类id、分类名称）
+    router.push({path:'/category/article/list',query:{id,name}})
+}
 </script>
 
 <template>
@@ -105,7 +112,7 @@ getArticles(current.value)
                                                   stroke-width="2"
                                                   d="M1 5v11a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1V6a1 1 0 0 0-1-1H1Zm0 0V2a1 1 0 0 1 1-1h5.443a1 1 0 0 1 .8.4l2.7 3.6H1Z"/>
                                         </svg>
-                                        <a href="#" class="text-gray-400 hover:underline">{{
+                                        <a @click="goCategoryArticleListPage(article.category.id,article.category.name)" class="text-gray-400 hover:underline">{{
                                                 article.category.name
                                             }}</a>
                                     </p>
