@@ -9,6 +9,7 @@ import AdminBlogSetting from "@/pages/admin/blog-settings.vue"
 import AccountSetting from "@/pages/admin/account-setting.vue"
 import ArchiveList from "@/pages/frontend/archive-list.vue";
 import CategoryList from "@/pages/frontend/category-list.vue";
+import TagList from "@/pages/frontend/tag-list.vue";
 import CategoryArticleList from "@/pages/frontend/category-article-list.vue";
 import {createRouter, createWebHashHistory} from "vue-router";
 
@@ -47,6 +48,14 @@ const routes = [
         component: CategoryArticleList,
         meta: {
             title: 'DK Blog 分类文章页'
+        }
+    },
+    {
+        // 标签页
+        path: '/tag/list',
+        component: TagList,
+        meta: {
+            title: 'DK Blog 标签页'
         }
     },
     {
