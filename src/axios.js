@@ -42,7 +42,7 @@ instance.interceptors.response.use(
         // 超出 2xx 范围的状态码都会触发该函数。
         // 对响应错误做点什么
         let status = error.response.status
-        showMessage(errorMsg,'error')
+
         // 一般 token失效 或 无效 会触发 后台返回401
         if (status === 401){
             // 直接使用userStore中的logout方法，删除token的同时也会触发路由前置守卫，跳转登录页面
@@ -52,9 +52,9 @@ instance.interceptors.response.use(
             // 刷新页面
             location.reload()
         }
-
         // 若后台有错误提示就用提示文字，默认提示为 ‘请求失败’
         let errorMsg = error.response.data.msg || '请求失败了哈😰'
+        showMessage(errorMsg,'error')
 
         return Promise.reject(error)
     }
