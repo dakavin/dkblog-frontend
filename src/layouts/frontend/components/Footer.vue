@@ -53,10 +53,10 @@ const siteStartDate = "2023-4-28";
 
 /* 增加版权和备案号的边距 */
 .copyright{
-    margin-left: 480px;  /* 调整左右的内边距 */
+    margin-left: 80px;  /* 调整左右的内边距 */
 }
 .icp {
-    margin-right: 480px;  /* 调整左右的内边距 */
+    margin-right: 80px;  /* 调整左右的内边距 */
 }
 @media (max-width: 768px) {
     .copyright, .icp {
