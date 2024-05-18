@@ -58,6 +58,10 @@ const goTagArticleListPage = (id, name) => {
     // 跳转时通过 query 携带参数（标签 ID、标签名称）
     router.push({path: '/tag/article/list', query: {id, name}})
 }
+// 调整文章详情页
+const goArticleDetailPage = (articleId) => {
+    router.push('/article/' + articleId)
+}
 </script>
 
 <template>
@@ -76,7 +80,7 @@ const goTagArticleListPage = (id, name) => {
                             <div
                                 class="bg-white h-full border border-gray-200 rounded-lg dark:bg-gray-800 dark:border-gray-700">
                                 <!-- 文章封面 -->
-                                <a href="#">
+                                <a @click="goArticleDetailPage(article.id)" class="cursor-pointer">
                                     <img class="rounded-t-lg h-48 w-full"
                                          :src="article.cover"/>
                                 </a>
@@ -92,7 +96,7 @@ const goTagArticleListPage = (id, name) => {
                                     </span>
                                     </div>
                                     <!-- 文章标题 -->
-                                    <a href="#">
+                                    <a @click="goArticleDetailPage(article.id)" class="cursor-pointer">
                                         <h2 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
                                             {{ article.title }}</h2>
                                     </a>
