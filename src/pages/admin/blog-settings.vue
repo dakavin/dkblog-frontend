@@ -170,9 +170,9 @@ const onSubmit = () => {
         updateBlogSettings(form).then((res) => {
             if (res.success === false){
                 // 获取服务端返回的错误消息
-                let message = res.message
+                let msg = res.msg
                 // 提示错误消息
-                showMessage(message, 'error')
+                showMessage(msg, 'error')
                 return
             }
             // 重新渲染页面中的数据

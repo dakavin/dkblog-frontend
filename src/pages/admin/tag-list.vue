@@ -221,7 +221,7 @@ const onUpdateSubmit = () => {
     // 先验证 form 表单字段
     updateFormRef.value.validate((valid) => {
         if (!valid) {
-            console.log('表单验证不通过')
+            // console.log('表单验证不通过')
             return false
         }
         // 显示提交按钮 loading效果
@@ -318,13 +318,13 @@ const btnSize = computed(() => {
                 <el-table-column label="操作" align="center" :width="colunmWidth">
                     <template #default="scope">
                         <div class="action-buttons">
-                            <el-button :size="btnSize" @click="showArticleUpdateEditor(scope.row)">
+                            <el-button :size="btnSize" @click="updateTagBtnClick(scope.row)">
                                 <el-icon class="">
                                     <Edit/>
                                 </el-icon>
                                 <span class="hide-on-mobile">编辑</span>
                             </el-button>
-                            <el-button :size="btnSize" type="danger" @click="deleteArticleSubmit(scope.row)">
+                            <el-button :size="btnSize" type="danger" @click="deleteTagSubmit(scope.row)">
                                 <el-icon class="">
                                     <Delete/>
                                 </el-icon>

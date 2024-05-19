@@ -314,13 +314,13 @@ const btnSize = computed(()=>{
                 <el-table-column label="操作" align="center" :width="colunmWidth">
                     <template #default="scope">
                         <div class="action-buttons">
-                            <el-button :size="btnSize" @click="showArticleUpdateEditor(scope.row)">
+                            <el-button :size="btnSize" @click="updateCategoryBtnClick(scope.row)">
                                 <el-icon class="">
                                     <Edit/>
                                 </el-icon>
                                 <span class="hide-on-mobile">编辑</span>
                             </el-button>
-                            <el-button :size="btnSize" type="danger" @click="deleteArticleSubmit(scope.row)">
+                            <el-button :size="btnSize" type="danger" @click="deleteCategorySubmit(scope.row)">
                                 <el-icon class="">
                                     <Delete/>
                                 </el-icon>
