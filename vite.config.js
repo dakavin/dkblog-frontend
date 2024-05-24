@@ -30,7 +30,7 @@ export default defineConfig({
             // 对于前端的url地址中有 /api 的，就会被此代理规则处理
             '/api': {
                 // 实际要转发的服务器（后端服务器）
-                target: 'http://localhost:8080',
+                target: 'http://localhost:8081',
                 // 在转发请求时，修改请求头中的 Origin 和 Host 字段，使其与后端服务器地址相匹配
                 changeOrigin: true,
                 // 正则：对于以 /api 为开始的url，将其替换
